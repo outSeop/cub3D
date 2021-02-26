@@ -4,7 +4,7 @@ SRCS =	init_color.c \
 		main.c	\
 
 NAME = Cub3D
-GCC_FLAG =  -g
+GCC_FLAG =  -g -fsanitize=address
 CC = gcc $(GCC_FLAG)
 
 OBJS = $(SRCS:.c=.o)
