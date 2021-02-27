@@ -1,13 +1,54 @@
 #include "cub3D.h"
 
-#define WIDTH 640
-#define HEIGHT 360
+int				main(void)
+{
+	t_game		game;
 
 
+	init_game(&game);
+	engine(&game);
+	start(&game);
+}
 
-#define mapWidth 24
-#define mapHeight 24
-
+int				main_loop(t_game *game)
+{
+	if (game->moving_forward)
+	{
+		game->player.pos_x += game->player.dir_x * MOVESPEED;
+		game->player.pos_y += game->player.dir_y * MOVESPEED;
+		engine(game);
+	}
+	else if (game->moving_behind)
+	{
+		game->player.pos_x -= game->player.dir_x * MOVESPEED;
+		game->player.pos_y -= game->player.dir_y * MOVESPEED;
+		engine(game);
+	}
+	if (game->turn_left)
+	{
+		double old_dir_x = game->player.dir_x;
+		game->player.dir_x = game->player.dir_x * cos(TURNSPEED) - game->player.dir_y * sin(TURNSPEED);
+		game->player.dir_y = old_dir_x * sin(TURNSPEED) + game->player.dir_y * cos(TURNSPEED);
+		double old_plane_x = game->ray.plane_x;
+		game->ray.plane_x = game->ray.plane_x * cos(TURNSPEED) - game->ray.plane_y * sin(TURNSPEED);
+		game->ray.plane_y = old_plane_x * sin(TURNSPEED) + game->ray.plane_y * cos(TURNSPEED);
+		engine(game);
+	}
+	else if (game->turn_right)
+	{
+		double old_dir_x = game->player.dir_x;
+		game->player.dir_x = game->player.dir_x * cos(-TURNSPEED) - game->player.dir_y * sin(-TURNSPEED);
+		game->player.dir_y = old_dir_x * sin(-TURNSPEED) + game->player.dir_y * cos(-TURNSPEED);
+		double old_plane_x = game->ray.plane_x;
+		game->ray.plane_x = game->ray.plane_x * cos(-TURNSPEED) - game->ray.plane_y * sin(-TURNSPEED);
+		game->ray.plane_y = old_plane_x * sin(-TURNSPEED) + game->ray.plane_y * cos(-TURNSPEED);
+		engine(game);
+	}
+	return (0);
+}
+/*
+int				refresh_camera(t_game *game)
+{
 int worldMap[mapWidth][mapHeight]=
 {
   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -35,55 +76,18 @@ int worldMap[mapWidth][mapHeight]=
   {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 };
+	t_stick		img;
+	img.img = mlx_new_image(game->vars.mlx, WIDTH, HEIGHT);
+	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
 
-
-
-int				main(void)
-{
-	t_game		*game;
-
-
-	game = init_game();
-	game->vars.mlx = mlx_init();
-	game->vars.win = mlx_new_window(game->vars.mlx, WIDTH, HEIGHT, "Hello world!");
-
-
-	mlx_hook(game->vars.win, 2, 0, key_press, &(game->vars));
-	mlx_hook(game->vars.win, 3, 0, key_release, &(game->vars));
-	mlx_loop_hook(game->vars.mlx, main_loop, game);
-
-
-	mlx_loop(game->vars.mlx);
-}
-
-int				main_loop(t_game *game)
-{
-	/*
-	if (game->moving_forward)
-		game->pos_x += 1;
-	else if (game->moving_behind)
-		game->pos_x -= 1;
-	else if (game->turn_left)
-		game->angle -= 1;
-	else if (game->turn_right)
-		game->angle += 1;
-	printf("%d - %d\n", game->pos_x, game->angle);
-	*/
-	refresh_camera(game);
-	return (0);
-}
-
-int				refresh_camera(t_game *game)
-{
-	t_data		img;
 	int x;
-	double posX = 22, posY = 12;
-	double dirX = 2, dirY = -1;
+	double posX = 12, posY = 12;
+	double dirX = 0.3, dirY = 0.1;
 	double planeX = 0, planeY = 0.66;
 	int			w;
 
 	x = 0;
-	w = 100;
+	w = 640;
 	while (x < w)
 	{
 		double		cameraX = 2 * x / (double)w - 1;
@@ -97,6 +101,8 @@ int				refresh_camera(t_game *game)
 
 	double deltaDistX = fabs(1 / rayDirX);
 	double deltaDistY = fabs(1 / rayDirY);
+
+
 	double prepWallDist;
 
 	int stepX;
@@ -130,7 +136,7 @@ int				refresh_camera(t_game *game)
 	{
 		if (sideDistX < sideDistY)
 		{
-			sideDistX += deltaDistY;
+			sideDistX += deltaDistX;
 			mapX += stepX;
 			side = 0;
 		}
@@ -147,6 +153,7 @@ int				refresh_camera(t_game *game)
 		prepWallDist = (mapX - posX + (1 - stepX) / 2) / rayDirX;
 	else
 		prepWallDist = (mapY - posY + (1 - stepY) / 2) / rayDirY;
+	printf("%d - %d\n", mapX, mapY);
 
 	int h = HEIGHT;
 	int lineHeight = (int)(h / prepWallDist);
@@ -161,27 +168,26 @@ int				refresh_camera(t_game *game)
 	if (worldMap[mapX][mapY] == 1)
 		color = 0x00FF0000;
 	else if (worldMap[mapX][mapY] == 2)
-		color = 0x00AA0000;
+		color = 0x0000FF00;
 	else if (worldMap[mapX][mapY] == 3)
-		color = 0x00CC0000;
+		color = 0x000000FF;
 	else if (worldMap[mapX][mapY] == 4)
-		color = 0x00DD0000;
+		color = 0x00000000;
 	else
 		color = 0x00000000;
 	if (side == 1)
 	 	color = color / 2;
-	img.img = mlx_new_image(game->vars.mlx, WIDTH, HEIGHT);
-	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
 	for (int i = drawStart; i < drawEnd; i++)
 	{
-		my_mlx_pixel_put(&img, 0, i, color);
+		my_mlx_pixel_put(&img, x, i, color);
 	}
-	mlx_put_image_to_window(game->vars.mlx, game->vars.win, img.img, x, 0);
 	x++;
 	}
-
+	mlx_put_image_to_window(game->vars.mlx, game->vars.win, img.img, 0, 0);
 
 }
+*/
+
 int				key_press(int keycode, t_game *game)
 {
 	if (keycode == ESC)
@@ -194,6 +200,7 @@ int				key_press(int keycode, t_game *game)
 		game->turn_right = 1;
 	else if (keycode == KEY_A)
 		game->turn_left = 1;
+	printf("%d\n", keycode);
 
 		return (0);
 }
@@ -209,6 +216,7 @@ int				key_release(int keycode, t_game *game)
 	else if (keycode == KEY_A)
 		game->turn_left = 0;
 
+	printf("%d\n", keycode);
 		return (0);
 }
 
@@ -220,25 +228,10 @@ int				close_window(t_vars *vars)
 int				mouse_pos(int keycode, t_vars *vars)
 {
 }
-void            my_mlx_pixel_put(t_data *data, int x, int y, int color)
+void            my_mlx_pixel_put(t_stick *data, int x, int y, int color)
 {
     char    *dst;
 
     dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
     *(unsigned int*)dst = color;
-}
-
-t_game			*init_game()
-{
-	t_game		*game;
-
-	if (!(game = malloc(sizeof(t_game))))
-		return (NULL);
-	game->pos_x = 0;
-	game->angle = 0;
-	game->moving_forward = 0;
-	game->moving_behind = 0;
-	game->turn_left = 0;
-	game->turn_right = 0;
-	return ((void*)game);
 }

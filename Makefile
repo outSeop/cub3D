@@ -2,6 +2,8 @@
 
 SRCS =	init_color.c \
 		main.c	\
+		init.c	\
+		engine.c \
 
 NAME = Cub3D
 GCC_FLAG =  -g -fsanitize=address
