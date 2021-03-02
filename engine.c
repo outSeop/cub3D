@@ -2,30 +2,31 @@
 
 int worldMap[mapWidth][mapHeight]=
 {
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+ {4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,7,7,7,7,7,7,7,7},
+  {4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,7},
+  {4,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7},
+  {4,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7},
+  {4,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,7},
+  {4,0,4,0,0,0,0,5,5,5,5,5,5,5,5,5,7,7,0,7,7,7,7,7},
+  {4,0,5,0,0,0,0,5,0,5,0,5,0,5,0,5,7,0,0,0,7,7,7,1},
+  {4,0,6,0,0,0,0,5,0,0,0,0,0,0,0,5,7,0,0,0,0,0,0,8},
+  {4,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,7,7,1},
+  {4,0,8,0,0,0,0,5,0,0,0,0,0,0,0,5,7,0,0,0,0,0,0,8},
+  {4,0,0,0,0,0,0,5,0,0,0,0,0,0,0,5,7,0,0,0,7,7,7,1},
+  {4,0,0,0,0,0,0,5,5,5,5,0,5,5,5,5,7,7,7,7,7,7,7,1},
+  {6,6,6,6,6,6,6,6,6,6,6,0,6,6,6,6,6,6,6,6,6,6,6,6},
+  {8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
+  {6,6,6,6,6,6,0,6,6,6,6,0,6,6,6,6,6,6,6,6,6,6,6,6},
+  {4,4,4,4,4,4,0,4,4,4,6,0,6,2,2,2,2,2,2,2,3,3,3,3},
+  {4,0,0,0,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,0,0,0,2},
+  {4,0,0,0,0,0,0,0,0,0,0,0,6,2,0,0,5,0,0,2,0,0,0,2},
+  {4,0,0,0,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,2,0,2,2},
+  {4,0,6,0,6,0,0,0,0,4,6,0,0,0,0,0,5,0,0,0,0,0,0,2},
+  {4,0,0,5,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,2,0,2,2},
+  {4,0,6,0,6,0,0,0,0,4,6,0,6,2,0,0,5,0,0,2,0,0,0,2},
+  {4,0,0,0,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,0,0,0,2},
+  {4,4,4,4,4,4,4,4,4,4,1,1,1,2,2,2,2,2,2,3,3,3,3,3}
+
 };
 
 void		engine(t_game *game)
@@ -88,13 +89,16 @@ void		engine(t_game *game)
 			game->ray.prep_wall_dist = (game->ray.map_x - game->player.pos_x + (1 - game->ray.step_x) / 2) / game->ray.dir_x;
 		else
 			game->ray.prep_wall_dist = (game->ray.map_y - game->player.pos_y + (1 - game->ray.step_y) / 2) / game->ray.dir_y;
-		game->draw.line_height = (int)(HEIGHT / game->ray.prep_wall_dist);
+		game->draw.line_height = (int)(HEIGHT / game->ray.prep_wall_dist * 1.2);
 		game->draw.draw_start = -(game->draw.line_height) / 2 + HEIGHT / 2;
 		if (game->draw.draw_start < 0)
 			game->draw.draw_start = 0;
 		game->draw.draw_end = game->draw.line_height / 2 + HEIGHT / 2;
 		if (game->draw.draw_end >= HEIGHT)
 			game->draw.draw_end = HEIGHT - 1;
+
+		/*
+
 		if (worldMap[game->ray.map_x][game->ray.map_y] == 1)
 			game->draw.color = 0x00FF0000;
 		else if (worldMap[game->ray.map_x][game->ray.map_y] == 2)
@@ -112,6 +116,36 @@ void		engine(t_game *game)
 		{
 			my_mlx_pixel_put(&game->stick, pixel_x, i, game->draw.color);
 		}
+		*/
+		/***	texture		***/
+
+		int texNum = worldMap[game->ray.map_x][game->ray.map_y] - 1;
+
+		double wallX;
+		if (game->ray.side == 0)
+			wallX = game->player.pos_y + game->ray.prep_wall_dist * game->ray.dir_y;
+		else
+			wallX = game->player.pos_x + game->ray.prep_wall_dist * game->ray.dir_x;
+		wallX -= floor(wallX);
+
+		int texX = (int)(wallX * (double)texWidth);
+		if (game->ray.side == 0 && game->ray.dir_x > 0)
+			texX = texWidth - texX - 1;
+		if (game->ray.side == 1 && game->ray.dir_y < 0)
+			texX = texWidth - texX - 1;
+
+
+		double step = 1.0 * texHeight / game->draw.line_height;
+		double texPos = (game->draw.draw_start - HEIGHT / 2 + game->draw.line_height / 2) * step;
+		for (int i = game->draw.draw_start; i < game->draw.draw_end; i++)
+		{
+			int texY = (int)texPos & (texHeight - 1);
+			texPos += step;
+			int color = g_texture[texNum][texHeight * texY + texX];
+			if (game->ray.side == 1)
+				color = (color >> 1) & 0x007f7f7f;
+			my_mlx_pixel_put(&game->stick, pixel_x, i, color);
+		}
 		pixel_x++;
 	}
 		mlx_put_image_to_window(game->vars.mlx, game->vars.win, game->stick.img, 0, 0);
@@ -121,6 +155,7 @@ void		start(t_game *game)
 {
 	mlx_hook(game->vars.win, 2, 0, key_press, &(game->vars));
 	mlx_hook(game->vars.win, 3, 0, key_release, &(game->vars));
+	mlx_hook(game->vars.win, 6, 0, catch_mouse_move, &(game->vars));
 	mlx_loop_hook(game->vars.mlx, main_loop, game);
 	mlx_loop(game->vars.mlx);
 }

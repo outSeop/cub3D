@@ -34,7 +34,7 @@ void			init_player(t_game *game)
 void			init_ray(t_game *game)
 {
 	game->ray.camera_x = 0;
-	game->ray.dir_x = 0;
+	game->ray.dir_x = -1;
 	game->ray.dir_y =0;
 	game->ray.map_x = 0;
 	game->ray.map_y = 0;

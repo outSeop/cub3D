@@ -7,6 +7,8 @@
 # include <mlx.h>
 
 
+#define texWidth 64
+#define texHeight 64
 
 # define mapWidth 24
 # define mapHeight 24
@@ -23,11 +25,14 @@
 
 # define PLAYER_START_POS_X 12
 # define PLAYER_START_POS_Y 12
-# define PLAYER_START_DIR_X 0.3
-# define PLAYER_START_DIR_Y 0.1
+# define PLAYER_START_DIR_X 1
+# define PLAYER_START_DIR_Y 0
 
 # define MOVESPEED 0.1
-# define TURNSPEED 0.03
+# define TURNSPEED 0.07
+
+int				g_check;
+int				g_texture[8][texHeight * texWidth];
 
 typedef struct s_stick
 {
@@ -87,6 +92,13 @@ typedef struct s_draw
 	int			color;
 }				t_draw;
 
+typedef struct	s_mouse
+{
+	int			pos_x;
+	int			pos_y;
+	int			playing;
+}				t_mouse;
+
 typedef struct s_game
 {
 	t_vars		vars;
@@ -94,12 +106,15 @@ typedef struct s_game
 	t_ray		ray;
 	t_player	player;
 	t_stick		stick;
+	t_mouse		mouse;
 	int			angle;
 	int			moving_forward;
 	int			moving_behind;
 	int			turn_left;
 	int			turn_right;
 }				t_game;
+
+
 
 void			my_mlx_pixel_put(t_stick *data, int x, int y, int color);
 int				key_press(int keycode, t_game *game);
@@ -125,6 +140,12 @@ void			init_stick(t_game *game);
 void			init_ray(t_game *game);
 
 void			print_init(t_game *game);
+int				catch_mouse_move();
+void			get_mouse_pos(t_game *game);
+void			hide_mouse_pointer(t_game *game);
+void			hold_in_senter(t_game *gmae);
 
+
+void			make_texture();
 
 #endif
