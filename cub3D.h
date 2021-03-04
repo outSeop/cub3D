@@ -2,13 +2,14 @@
 # define CUB3D_H
 
 # include "libft/libft.h"
+# include "gnl/get_next_line.h"
 # include <math.h>
 # include <stdio.h>
 # include <mlx.h>
 
 
-#define texWidth 64
-#define texHeight 64
+# define TEX_WIDTH 64
+# define TEX_HEIGHT 64
 
 # define mapWidth 24
 # define mapHeight 24
@@ -31,8 +32,16 @@
 # define MOVESPEED 0.1
 # define TURNSPEED 0.07
 
+# define R
+# define NO 0
+# define SO 1
+# define WE 2
+# define EA 3
+# define S 4
+# define F
+
 int				g_check;
-int				g_texture[8][texHeight * texWidth];
+int				g_texture[8][TEX_HEIGHT * TEX_WIDTH];
 
 typedef struct s_stick
 {
@@ -82,6 +91,7 @@ typedef struct s_player
 	double		pos_y;
 	double		dir_x;
 	double		dir_y;
+	int			jump;
 }				t_player;
 
 typedef struct s_draw
@@ -92,12 +102,31 @@ typedef struct s_draw
 	int			color;
 }				t_draw;
 
+typedef struct s_map
+{
+	int			**map;
+	char		*textures[5];
+	int			resolution;
+	int			floor;
+	int			celling;
+}				t_map;
+
 typedef struct	s_mouse
 {
 	int			pos_x;
 	int			pos_y;
 	int			playing;
 }				t_mouse;
+
+typedef struct s_texture
+{
+	int			num;
+	int			tex_x;
+	int			tex_y;
+	double		step;
+	double		wall_x;
+	double		tex_pos;
+}				t_texture;
 
 typedef struct s_game
 {
@@ -107,6 +136,7 @@ typedef struct s_game
 	t_player	player;
 	t_stick		stick;
 	t_mouse		mouse;
+	t_texture	tex;
 	int			angle;
 	int			moving_forward;
 	int			moving_behind;
@@ -145,6 +175,7 @@ void			get_mouse_pos(t_game *game);
 void			hide_mouse_pointer(t_game *game);
 void			hold_in_senter(t_game *gmae);
 
+void			jump(t_game *game);
 
 void			make_texture();
 

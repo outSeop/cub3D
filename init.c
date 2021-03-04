@@ -29,6 +29,7 @@ void			init_player(t_game *game)
 	game->player.pos_y = PLAYER_START_POS_Y;
 	game->player.dir_x = PLAYER_START_DIR_X;
 	game->player.dir_y = PLAYER_START_DIR_Y;
+	game->player.jump = 0;
 }
 
 void			init_ray(t_game *game)
@@ -52,7 +53,7 @@ void			init_ray(t_game *game)
 
 void			init_stick(t_game *game)
 {
-	game->stick.img = mlx_new_image(game->vars.mlx, WIDTH, HEIGHT);
+	game->stick.img = mlx_new_image(game->vars.mlx, WIDTH, HEIGHT * 2);
 	game->stick.addr = mlx_get_data_addr(game->stick.img, &game->stick.bits_per_pixel ,&game->stick.line_length, &game->stick.endian);
 }
 

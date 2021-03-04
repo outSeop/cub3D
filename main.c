@@ -50,7 +50,7 @@ int				main_loop(t_game *game)
 		mlx_mouse_get_pos(game->vars.win, &(game->mouse.pos_x), &(game->mouse.pos_y));
 		hold_in_senter(game);
 	}
-		hide_mouse_pointer(game);
+	hide_mouse_pointer(game);
 	return (0);
 }
 
@@ -81,8 +81,6 @@ int				key_release(int keycode, t_game *game)
 		game->turn_right = 0;
 	else if (keycode == KEY_A)
 		game->turn_left = 0;
-
-	printf("%d\n", keycode);
 		return (0);
 }
 

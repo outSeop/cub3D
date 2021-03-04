@@ -6,6 +6,9 @@ SRCS =	init_color.c \
 		engine.c \
 		hooks.c \
 		texture.c \
+		actions.c \
+		gnl/get_next_line.c \
+		gnl/get_next_line_utils.c \
 
 NAME = Cub3D
 GCC_FLAG =  -g -fsanitize=address

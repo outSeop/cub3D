@@ -90,65 +90,40 @@ void		engine(t_game *game)
 		else
 			game->ray.prep_wall_dist = (game->ray.map_y - game->player.pos_y + (1 - game->ray.step_y) / 2) / game->ray.dir_y;
 		game->draw.line_height = (int)(HEIGHT / game->ray.prep_wall_dist * 1.2);
-		game->draw.draw_start = -(game->draw.line_height) / 2 + HEIGHT / 2;
+		game->draw.draw_start = -(game->draw.line_height) / 2 + HEIGHT;
 		if (game->draw.draw_start < 0)
 			game->draw.draw_start = 0;
-		game->draw.draw_end = game->draw.line_height / 2 + HEIGHT / 2;
-		if (game->draw.draw_end >= HEIGHT)
-			game->draw.draw_end = HEIGHT - 1;
+		game->draw.draw_end = game->draw.line_height / 2 + HEIGHT;
+		if (game->draw.draw_end >= HEIGHT * 2)
+			game->draw.draw_end = HEIGHT * 2 - 1;
 
-		/*
-
-		if (worldMap[game->ray.map_x][game->ray.map_y] == 1)
-			game->draw.color = 0x00FF0000;
-		else if (worldMap[game->ray.map_x][game->ray.map_y] == 2)
-			game->draw.color = 0x0000FF00;
-		else if (worldMap[game->ray.map_x][game->ray.map_y] == 3)
-			game->draw.color = 0x000000FF;
-		else if (worldMap[game->ray.map_x][game->ray.map_y] == 4)
-			game->draw.color = 0xFFFFFFFF;
-		else
-			game->draw.color = 0x00000000;
-		if (game->ray.side == 1)
-			game->draw.color /= 2;
-		int i;
-		for (i = game->draw.draw_start; i < game->draw.draw_end; i++)
-		{
-			my_mlx_pixel_put(&game->stick, pixel_x, i, game->draw.color);
-		}
-		*/
-		/***	texture		***/
-
-		int texNum = worldMap[game->ray.map_x][game->ray.map_y] - 1;
-
-		double wallX;
+		game->tex.num = worldMap[game->ray.map_x][game->ray.map_y] - 1;
 		if (game->ray.side == 0)
-			wallX = game->player.pos_y + game->ray.prep_wall_dist * game->ray.dir_y;
+			game->tex.wall_x = game->player.pos_y + game->ray.prep_wall_dist * game->ray.dir_y;
 		else
-			wallX = game->player.pos_x + game->ray.prep_wall_dist * game->ray.dir_x;
-		wallX -= floor(wallX);
+			game->tex.wall_x = game->player.pos_x + game->ray.prep_wall_dist * game->ray.dir_x;
+		game->tex.wall_x -= floor(game->tex.wall_x);
 
-		int texX = (int)(wallX * (double)texWidth);
+		game->tex.tex_x = (int)(game->tex.wall_x * (double)TEX_WIDTH);
 		if (game->ray.side == 0 && game->ray.dir_x > 0)
-			texX = texWidth - texX - 1;
+			game->tex.tex_x = TEX_WIDTH - game->tex.tex_x - 1;
 		if (game->ray.side == 1 && game->ray.dir_y < 0)
-			texX = texWidth - texX - 1;
-
-
-		double step = 1.0 * texHeight / game->draw.line_height;
-		double texPos = (game->draw.draw_start - HEIGHT / 2 + game->draw.line_height / 2) * step;
+			game->tex.tex_x = TEX_WIDTH - game->tex.tex_x - 1;
+		game->tex.step = 1.0 * TEX_HEIGHT / game->draw.line_height;
+		game->tex.tex_pos = (game->draw.draw_start - HEIGHT+ game->draw.line_height / 2) * game->tex.step;
 		for (int i = game->draw.draw_start; i < game->draw.draw_end; i++)
 		{
-			int texY = (int)texPos & (texHeight - 1);
-			texPos += step;
-			int color = g_texture[texNum][texHeight * texY + texX];
+			game->tex.tex_y = (int)game->tex.tex_pos & (TEX_HEIGHT - 1);
+			game->tex.tex_pos += game->tex.step;
+			int color = g_texture[game->tex.num][TEX_HEIGHT * game->tex.tex_y + game->tex.tex_x];
 			if (game->ray.side == 1)
 				color = (color >> 1) & 0x007f7f7f;
 			my_mlx_pixel_put(&game->stick, pixel_x, i, color);
 		}
 		pixel_x++;
 	}
-		mlx_put_image_to_window(game->vars.mlx, game->vars.win, game->stick.img, 0, 0);
+		mlx_put_image_to_window(game->vars.mlx, game->vars.win, game->stick.img, 0, -(HEIGHT / 2) + game->player.jump);
+
 		init_stick(game);
 }
 void		start(t_game *game)
