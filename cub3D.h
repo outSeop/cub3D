@@ -4,6 +4,7 @@
 # include "libft/libft.h"
 # include "gnl/get_next_line.h"
 # include <math.h>
+# include <fcntl.h>
 # include <stdio.h>
 # include <mlx.h>
 
@@ -174,6 +175,12 @@ int				catch_mouse_move();
 void			get_mouse_pos(t_game *game);
 void			hide_mouse_pointer(t_game *game);
 void			hold_in_senter(t_game *gmae);
+
+void			parsing_map(t_map *map, int fd);
+int				pass_space(char *line);
+int				ft_isspace(char line);
+char			*save_path(char *line);
+int				save_map_info(char *line);
 
 void			jump(t_game *game);
 

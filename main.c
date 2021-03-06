@@ -1,5 +1,5 @@
 #include "cub3D.h"
-
+/*
 int				main(void)
 {
 	t_game		game;
@@ -10,7 +10,7 @@ int				main(void)
 	engine(&game);
 	start(&game);
 }
-
+*/
 int				main_loop(t_game *game)
 {
 	if (game->moving_forward)

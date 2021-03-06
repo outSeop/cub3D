@@ -1,17 +1,19 @@
 .PHONY: libft minilibx all clean fclean re
 
 SRCS =	init_color.c \
-		main.c	\
 		init.c	\
+		main.c	\
 		engine.c \
 		hooks.c \
 		texture.c \
 		actions.c \
 		gnl/get_next_line.c \
 		gnl/get_next_line_utils.c \
+		parsing.c \
+		test.c \
 
 NAME = Cub3D
-GCC_FLAG =  -g -fsanitize=address
+GCC_FLAG = 
 CC = gcc $(GCC_FLAG)
 
 OBJS = $(SRCS:.c=.o)
