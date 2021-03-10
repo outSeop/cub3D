@@ -15,8 +15,7 @@ int main()
 		printf("%s\n", game.map.textures[i]);
 	printf("%X\n", game.map.floor);
 	printf("%X\n", game.map.celling);
-	int i;
-	i=0;
+	int i = 0;
 	while (game.map.map[i])
 	{
 		printf("%s\n", game.map.map[i]);

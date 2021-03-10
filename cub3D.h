@@ -108,11 +108,19 @@ typedef struct s_draw
 typedef struct s_map
 {
 	char			**map;
+
 	char		*textures[5];
 	int			resolution[2];
 	int			floor;
 	int			celling;
 }				t_map;
+
+typedef struct s_node
+{
+	int			y;
+	char		*line;
+	struct s_node *next;
+}				t_node;
 
 typedef struct	s_mouse
 {
@@ -189,6 +197,10 @@ int				save_map_info(char *line);
 int			put_in_texture(t_map *map, char *line);
 char			**free_all(char **line);
 void			jump(t_game *game);
+
+t_node			*create_node();
+t_node			*next_node(t_node *curr);
+char			**list_to_array(t_node *list, int size);
 
 void			make_texture();
 

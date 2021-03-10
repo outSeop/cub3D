@@ -1,6 +1,7 @@
 .PHONY: libft minilibx all clean fclean re
 
 SRCS =	init_color.c \
+		node.c \
 		init.c	\
 		main.c	\
 		engine.c \

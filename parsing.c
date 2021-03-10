@@ -9,9 +9,8 @@ void		parsing_cub(t_map *map, int fd)
 	line = 0;
 	while (get_next_line(fd, &line))
 	{
-		if (check < 8)
-			check += put_in_texture(map, line);
-		else
+		check += put_in_texture(map, line);
+		if (check >= 8)
 			break ;
 	}
 	map->map = parsing_map(fd);
@@ -109,26 +108,23 @@ int				save_map_info(char *line)
 
 char			**parsing_map(int fd)
 {
-	char		**lines = NULL;
-	char		**temp;
+	t_node		*node;
+	t_node		*head;
 	char		*line;
+	char		**lines = NULL;
 	int			i;
-	int			j;
 
 	i = 0;
+	head = create_node();
+	node = head;
 	while (get_next_line(fd, &line))
 	{
-		lines = malloc(sizeof(char**) * i);
-		j = 0;
-		while (lines[j])
-		{
-			temp[j] = lines[j];
-			j++;
-		}
-		temp[i] = ft_strdup(line);
-		lines = temp;
+		node = next_node(node);
+		node->y = i;
+		node->line = ft_strdup(line);
 		i++;
 	}
+	lines = list_to_array(head->next, i);
 	return (lines);
 }
 
