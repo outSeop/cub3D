@@ -12,6 +12,7 @@ void			init_game(t_game *game)
 	init_vars(game);
 	init_stick(game);
 	init_ray(game);
+	init_map(game);
 
 }
 
@@ -61,6 +62,18 @@ void			init_vars(t_game *game)
 {
 	game->vars.mlx = mlx_init();
 	game->vars.win = mlx_new_window(game->vars.mlx, WIDTH, HEIGHT, "title");
+}
+
+void			init_map(t_game *game)
+{
+	game->map.map = NULL;
+	game->map.textures[0] = NULL;
+	game->map.textures[1] = NULL;
+	game->map.textures[2] = NULL;
+	game->map.textures[3] = NULL;
+	game->map.textures[4] = NULL;
+	game->map.floor = 0;
+	game->map.celling = 0;
 }
 
 void			print_init(t_game *game)

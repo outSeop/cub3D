@@ -45,12 +45,14 @@ int				main_loop(t_game *game)
 		game->ray.plane_y = old_plane_x * sin(-TURNSPEED) + game->ray.plane_y * cos(-TURNSPEED);
 		engine(game);
 	}
+	/*
 	if (game->mouse.playing == 1)
 	{
 		mlx_mouse_get_pos(game->vars.win, &(game->mouse.pos_x), &(game->mouse.pos_y));
 		hold_in_senter(game);
 	}
 	hide_mouse_pointer(game);
+	*/
 	return (0);
 }
 
@@ -87,6 +89,7 @@ int				key_release(int keycode, t_game *game)
 int				close_window(t_vars *vars)
 {
 	mlx_destroy_window(vars->mlx, vars->win);
+	return (0);
 }
 
 void            my_mlx_pixel_put(t_stick *data, int x, int y, int color)

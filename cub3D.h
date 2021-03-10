@@ -15,6 +15,7 @@
 # define mapWidth 24
 # define mapHeight 24
 
+# define SPACES "\t\r "
 # define ESC 53
 # define KEY_A 2
 # define KEY_S 1
@@ -33,13 +34,14 @@
 # define MOVESPEED 0.1
 # define TURNSPEED 0.07
 
-# define R
 # define NO 0
 # define SO 1
 # define WE 2
 # define EA 3
 # define S 4
-# define F
+# define R 5
+# define F 6
+# define C 7
 
 int				g_check;
 int				g_texture[8][TEX_HEIGHT * TEX_WIDTH];
@@ -105,9 +107,9 @@ typedef struct s_draw
 
 typedef struct s_map
 {
-	int			**map;
+	char			**map;
 	char		*textures[5];
-	int			resolution;
+	int			resolution[2];
 	int			floor;
 	int			celling;
 }				t_map;
@@ -138,6 +140,7 @@ typedef struct s_game
 	t_stick		stick;
 	t_mouse		mouse;
 	t_texture	tex;
+	t_map		map;
 	int			angle;
 	int			moving_forward;
 	int			moving_behind;
@@ -169,6 +172,7 @@ void			init_draw(t_game *game);
 void			init_player(t_game *game);
 void			init_stick(t_game *game);
 void			init_ray(t_game *game);
+void			init_map(t_game *game);
 
 void			print_init(t_game *game);
 int				catch_mouse_move();
@@ -176,12 +180,14 @@ void			get_mouse_pos(t_game *game);
 void			hide_mouse_pointer(t_game *game);
 void			hold_in_senter(t_game *gmae);
 
-void			parsing_map(t_map *map, int fd);
+void			parsing_cub(t_map *map, int fd);
+char			**parsing_map(int fd);
 int				pass_space(char *line);
 int				ft_isspace(char line);
 char			*save_path(char *line);
 int				save_map_info(char *line);
-
+int			put_in_texture(t_map *map, char *line);
+char			**free_all(char **line);
 void			jump(t_game *game);
 
 void			make_texture();

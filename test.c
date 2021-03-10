@@ -6,15 +6,20 @@
 
 int main()
 {
-	t_map map;
+	t_game game;
 	int fd = open("a.cub", O_RDONLY);
 
-	parsing_map(&map, fd);
+	init_game(&game);
+	parsing_cub(&game.map, fd);
 	for (int i = 0; i < 5; i++)
-		printf("%s\n", map.textures[i]);
-	printf("%X\n", map.celling);
-	printf("%X\n", map.floor);
-	while (1)
-	{}
-
+		printf("%s\n", game.map.textures[i]);
+	printf("%X\n", game.map.floor);
+	printf("%X\n", game.map.celling);
+	int i;
+	i=0;
+	while (game.map.map[i])
+	{
+		printf("%s\n", game.map.map[i]);
+		i++;
+	}
 }

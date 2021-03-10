@@ -130,7 +130,7 @@ void		start(t_game *game)
 {
 	mlx_hook(game->vars.win, 2, 0, key_press, &(game->vars));
 	mlx_hook(game->vars.win, 3, 0, key_release, &(game->vars));
-	mlx_hook(game->vars.win, 6, 0, catch_mouse_move, &(game->vars));
+	//mlx_hook(game->vars.win, 6, 0, catch_mouse_move, &(game->vars));
 	mlx_loop_hook(game->vars.mlx, main_loop, game);
 	mlx_loop(game->vars.mlx);
 }
