@@ -44,7 +44,7 @@ void			init_ray(t_game *game)
 	game->ray.side_dist_y = 0;
 	game->ray.delta_dist_x = 0;
 	game->ray.delta_dist_y = 0;
-	game->ray.prep_wall_dist = 0;
+	game->ray.perp_dist = 0;
 	game->ray.step_x = 0;
 	game->ray.step_y = 0;
 	game->ray.side = 0;

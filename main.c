@@ -13,17 +13,32 @@ int				main(void)
 */
 int				main_loop(t_game *game)
 {
+	double		temp_pox_x;
+	double		temp_pox_y;
+
+	temp_pox_x = game->player.pos_x;
+	temp_pox_y = game->player.pos_y;
 	if (game->moving_forward)
 	{
 		game->player.pos_x += game->player.dir_x * MOVESPEED;
 		game->player.pos_y += game->player.dir_y * MOVESPEED;
+		if (game->map.map[(int)game->player.pos_x][(int)game->player.pos_y] != '0')
+		{
+			game->player.pos_x = temp_pox_x;
+			game->player.pos_y = temp_pox_y;
+		}
 		engine(game);
 	}
 	else if (game->moving_behind)
 	{
 		game->player.pos_x -= game->player.dir_x * MOVESPEED;
 		game->player.pos_y -= game->player.dir_y * MOVESPEED;
-		engine(game);
+		if (game->map.map[(int)game->player.pos_x][(int)game->player.pos_y] != '0')
+		{
+			game->player.pos_x = temp_pox_x;
+			game->player.pos_y = temp_pox_y;
+		}
+			engine(game);
 	}
 	if (game->turn_left)
 	{

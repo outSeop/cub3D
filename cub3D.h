@@ -12,6 +12,8 @@
 # define TEX_WIDTH 64
 # define TEX_HEIGHT 64
 
+# define All_DIRECTIONS "WSEN"
+
 # define mapWidth 24
 # define mapHeight 24
 
@@ -80,7 +82,7 @@ typedef struct s_ray
 	double		side_dist_y;
 	double		delta_dist_x;
 	double		delta_dist_y;
-	double		prep_wall_dist;
+	double		perp_dist;
 	int			step_x;
 	int			step_y;
 	int			side;
@@ -108,7 +110,6 @@ typedef struct s_draw
 typedef struct s_map
 {
 	char			**map;
-
 	char		*textures[5];
 	int			resolution[2];
 	int			floor;
@@ -174,6 +175,13 @@ int				refresh_camera(t_game *game);
 void			start(t_game *game);
 void			engine(t_game *game);
 
+void			set_ray_info(t_ray *ray, t_player *player);
+void			check_hit(t_ray *ray, t_map *map);
+void			calc_perp_dist(t_ray *ray, t_player *player);
+void			set_draw_info(t_draw *draw, t_ray *ray);
+void			set_tex_info(t_game *game);
+void			buffering_pixels(t_game *game, int pixel_x);
+
 void			init_game(t_game *game);
 void			init_vars(t_game *game);
 void			init_draw(t_game *game);
@@ -188,13 +196,14 @@ void			get_mouse_pos(t_game *game);
 void			hide_mouse_pointer(t_game *game);
 void			hold_in_senter(t_game *gmae);
 
-void			parsing_cub(t_map *map, int fd);
-char			**parsing_map(int fd);
+void			parsing_cub(t_map *map, t_player *player, int fd);
+char			**parsing_map(int fd, t_player *player);
+void			find_player(char *line, t_player *player, int num);
 int				pass_space(char *line);
 int				ft_isspace(char line);
 char			*save_path(char *line);
 int				save_map_info(char *line);
-int			put_in_texture(t_map *map, char *line);
+int				put_in_texture(t_map *map, char *line);
 char			**free_all(char **line);
 void			jump(t_game *game);
 

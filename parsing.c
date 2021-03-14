@@ -1,6 +1,6 @@
 #include "cub3D.h"
 
-void		parsing_cub(t_map *map, int fd)
+void		parsing_cub(t_map *map, t_player *player, int fd)
 {
 	char	*line;
 	int		check;
@@ -13,7 +13,7 @@ void		parsing_cub(t_map *map, int fd)
 		if (check >= 8)
 			break ;
 	}
-	map->map = parsing_map(fd);
+	map->map = parsing_map(fd, player);
 	printf("end\n");
 }
 
@@ -97,16 +97,12 @@ int				save_map_info(char *line)
 	i = pass_space(line + i);
 	colors = ft_split(line + i, ',');
 	i = 0;
-	/*
-	while (colors[i])
-		ft_strtrim(colors[i++], SPACES);
-	*/
 	res = create_trgb(0, ft_atoi(colors[0]), ft_atoi(colors[1]), ft_atoi(colors[2]));
 	free(colors);
 	return (res);
 }
 
-char			**parsing_map(int fd)
+char			**parsing_map(int fd, t_player *player)
 {
 	t_node		*node;
 	t_node		*head;
@@ -122,10 +118,56 @@ char			**parsing_map(int fd)
 		node = next_node(node);
 		node->y = i;
 		node->line = ft_strdup(line);
+		find_player(node->line, player, i);
 		i++;
 	}
 	lines = list_to_array(head->next, i);
 	return (lines);
+}
+
+void			find_player(char *line, t_player *player, int num)
+{
+	int			i;
+	int			len;
+
+	i = 0;
+	len = ft_strlen(line);
+	while (i < len)
+	{
+		if (line[i] == 'N')
+		{
+			player->dir_x = 1;
+			player->dir_y = 0;
+			player->pos_x = num;
+			player->pos_y = i;
+			line[i] = '0';
+		}
+		else if (line[i] == 'S')
+		{
+			player->dir_x = 0;
+			player->dir_y = -1;
+			player->pos_x = num;
+			player->pos_y = i;
+			line[i] = '0';
+		}
+		else if (line[i] == 'W')
+		{
+			player->dir_x = 1;
+			player->dir_y = 0;
+			player->pos_x = num;
+			player->pos_y = i;
+			line[i] = '0';
+		}
+		else if (line[i] == 'E')
+		{
+			player->dir_x = 0;
+			player->dir_y = -1;
+			player->pos_x = i;
+			player->pos_y = num;
+			line[i] = '0';
+		}
+		i++;
+	}
 }
 
 char			**free_all(char **line)

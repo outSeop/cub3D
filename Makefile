@@ -1,6 +1,7 @@
 .PHONY: libft minilibx all clean fclean re
 
 SRCS =	init_color.c \
+		tmp.c \
 		node.c \
 		init.c	\
 		main.c	\
@@ -13,7 +14,7 @@ SRCS =	init_color.c \
 		test.c \
 
 NAME = Cub3D
-GCC_FLAG = -Wall -Werror -Wextra -g -fsanitize=address
+GCC_FLAG = -g -fsanitize=address # -Wall -Werror -Wextra 
 CC = gcc $(GCC_FLAG)
 
 OBJS = $(SRCS:.c=.o)
