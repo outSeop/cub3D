@@ -15,23 +15,20 @@ int			main(int argc, char *argv[])
 		return (0);
 	}
 	fd = open(argv[1], O_RDONLY);
-	init_game(&game);
+	init_map(&game);
+	init_player(&game);
 	parsing_cub(&game.map, &game.player, fd);
-
-	for (int i = 0; i < 5; i++)
-		printf("%s\n", game.map.textures[i]);
-	printf("%X\n", game.map.floor);
-	printf("%X\n", game.map.celling);
-	int i = 0;
-	while (game.map.map[i])
+	check_map(game.map.map, (int)game.player.pos_x, (int)game.player.pos_y);
+	game.ray.width = game.map.resolution[0];
+	game.ray.height = game.map.resolution[1];
+	init_game(&game);
+	if (game.player.check != 1)
 	{
-		printf("%s\n", game.map.map[i]);
-		i++;
+		printf("ERROR\n");
+		return (0);
 	}
-	printf("%2f - %.2f\n", game.player.pos_x, game.player.pos_y);
-	printf("%2f - %.2f\n", game.player.dir_x, game.player.dir_y);
 
-	make_texture();
-	engine(&game);
+	make_texture(&game);
+	//engine(&game);
 	start(&game);
 }

@@ -36,3 +36,11 @@ char			**list_to_array(t_node *list, int size)
 	array[i] = NULL;
 	return (array);
 }
+
+void			add_node(t_node *axis, int value)
+{
+	while (axis->next)
+		axis = axis->next;
+	axis->next = create_node();
+	axis->next->y = value;
+}

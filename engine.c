@@ -7,9 +7,9 @@ void		engine(t_game *game)
 
 	pixel_x = 0;
 	mlx_clear_window(game->vars.mlx, game->vars.win);
-	while (pixel_x < WIDTH)
+	while (pixel_x < game->ray.width)
 	{
-		game->ray.camera_x = 2 * pixel_x / (double)WIDTH - 1;
+		game->ray.camera_x = 2 * pixel_x / (double)game->ray.width - 1;
 		set_ray_info(&game->ray, &game->player);
 		check_hit(&game->ray, &game->map);
 		calc_perp_dist(&game->ray, &game->player);

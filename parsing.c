@@ -13,8 +13,7 @@ void		parsing_cub(t_map *map, t_player *player, int fd)
 		if (check >= 8)
 			break ;
 	}
-	map->map = parsing_map(fd, player);
-	printf("end\n");
+	map->map = parsing_map(fd, player, &map->height);
 }
 
 void		parsing_textures(t_map *map, int fd)
@@ -39,7 +38,7 @@ int			put_in_texture(t_map *map, char *line)
 	}
 	element[i] = '\0';
 	if (!ft_strncmp(element, "R", i))
-		printf("element: %s\n", element);
+		save_res_info(map, line);
 	else if (!ft_strncmp(element, "F", i) && map->floor == 0)
 		map->floor = save_map_info(line);
 	else if (!ft_strncmp(element, "C", i) && map->celling == 0)
@@ -102,7 +101,7 @@ int				save_map_info(char *line)
 	return (res);
 }
 
-char			**parsing_map(int fd, t_player *player)
+char			**parsing_map(int fd, t_player *player, int *map_height)
 {
 	t_node		*node;
 	t_node		*head;
@@ -121,6 +120,7 @@ char			**parsing_map(int fd, t_player *player)
 		find_player(node->line, player, i);
 		i++;
 	}
+	*map_height = i;
 	lines = list_to_array(head->next, i);
 	return (lines);
 }
@@ -128,46 +128,52 @@ char			**parsing_map(int fd, t_player *player)
 void			find_player(char *line, t_player *player, int num)
 {
 	int			i;
-	int			len;
 
 	i = 0;
-	len = ft_strlen(line);
-	while (i < len)
+	while (line[i])
 	{
 		if (line[i] == 'N')
 		{
-			player->dir_x = 1;
-			player->dir_y = 0;
-			player->pos_x = num;
-			player->pos_y = i;
+			set_player_dir_info(player, 0, 1);
+			set_player_pos_info(player, num, i);
+			player->check++;
 			line[i] = '0';
 		}
 		else if (line[i] == 'S')
 		{
-			player->dir_x = 0;
-			player->dir_y = -1;
-			player->pos_x = num;
-			player->pos_y = i;
+			set_player_dir_info(player, 0, -1);
+			set_player_pos_info(player, num, i);
+			player->check++;
 			line[i] = '0';
 		}
 		else if (line[i] == 'W')
 		{
-			player->dir_x = 1;
-			player->dir_y = 0;
-			player->pos_x = num;
-			player->pos_y = i;
+			set_player_dir_info(player, -1, 0);
+			set_player_pos_info(player, num, i);
+			player->check++;
 			line[i] = '0';
 		}
 		else if (line[i] == 'E')
 		{
-			player->dir_x = 0;
-			player->dir_y = -1;
-			player->pos_x = i;
-			player->pos_y = num;
+			set_player_dir_info(player, 1, 0);
+			set_player_pos_info(player, num, i);
+			player->check++;
 			line[i] = '0';
 		}
 		i++;
 	}
+}
+
+void			set_player_dir_info(t_player *player, int dir_x, int dir_y)
+{
+	player->dir_x = dir_x;
+	player->dir_y = dir_y;
+}
+
+void			set_player_pos_info(t_player *player, int pos_x, int pos_y)
+{
+	player->pos_x = pos_x;
+	player->pos_y = pos_y;
 }
 
 char			**free_all(char **line)

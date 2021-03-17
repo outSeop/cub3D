@@ -1,14 +1,24 @@
 #include "cub3D.h"
 
+void	save_res_info(t_map *map, char *line)
+{
+	int	i;
+
+	map->resolution[0] = ft_atoi(line);
+	while (!ft_isspace(line[i]))
+		i++;
+	map->resolution[1] = ft_atoi(line + i);
+}
+
 void	set_draw_info(t_draw *draw, t_ray *ray)
 {
-		draw->line_height = (int)(HEIGHT / ray->perp_dist * 1.2);
-		draw->draw_start = -(draw->line_height) / 2 + HEIGHT / 2;
+		draw->line_height = (int)(ray->height / ray->perp_dist * 1.2);
+		draw->draw_start = -(draw->line_height) / 2 + ray->height / 2;
 		if (draw->draw_start < 0)
 			draw->draw_start = 0;
-		draw->draw_end = draw->line_height / 2 + HEIGHT / 2;
-		if (draw->draw_end >= HEIGHT)
-			draw->draw_end = HEIGHT - 1;
+		draw->draw_end = draw->line_height / 2 + ray->height / 2;
+		if (draw->draw_end >= ray->height)
+			draw->draw_end = ray->height - 1;
 }
 
 void	set_tex_info(t_game *game)
@@ -25,7 +35,7 @@ void	set_tex_info(t_game *game)
 	if (game->ray.side == 1 && game->ray.dir_y < 0)
 		game->tex.tex_x = TEX_WIDTH - game->tex.tex_x - 1;
 	game->tex.step = 1.0 * TEX_HEIGHT / game->draw.line_height;
-	game->tex.tex_pos = (game->draw.draw_start - HEIGHT / 2 + game->draw.line_height / 2);
+	game->tex.tex_pos = (game->draw.draw_start - game->ray.height / 2 + game->draw.line_height / 2);
 	game->tex.tex_pos *= game->tex.step;
 }
 
@@ -47,6 +57,44 @@ void	buffering_pixels(t_game *game, int pixel_x)
 		my_mlx_pixel_put(&game->stick, pixel_x, i, color);
 		i++;
 	}
-	while (i < HEIGHT)
+	while (i < game->ray.height)
 		my_mlx_pixel_put(&game->stick, pixel_x, i++, game->map.floor);
+}
+
+int			check_map(char **map, int x, int y, int map_height)
+{
+	t_node	*node_x;
+	t_node	*node_y;
+	int		hy[4] = {0, 0, 1, -1};
+	int		hx[4] = {1, -1, 0, 0};
+	char	**visited;
+
+	visited = malloc(sizeof(map));
+	ft_memcpy(visited, map, sizeof(map));
+	node_x = create_node();
+	node_y = create_node();
+
+	add_node(node_x, x);
+	add_node(node_y, y);
+
+	while (node_y)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			int cy = node_y->y + hy[i];
+			int cx = node_x->y + hx[i];
+
+			if (cy < 0 || cy > map_height || cx < 0 || cx > ft_strlen(map[x]))
+				return (0);
+			if (map[cy][cx] != 1 && visited[cy][cx] != 1)
+			{
+				visited[cy][cx] = 1
+				add_node(node_y, cy);
+				add_node(node_x, cx);
+			}
+		}
+		node_y = node_y->next;
+		node_x = node_x->next;
+	}
+
 }

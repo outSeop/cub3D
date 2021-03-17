@@ -1,4 +1,5 @@
 #include "cub3D.h"
+/*
 void			make_texture()
 {
 	int			x;
@@ -28,4 +29,29 @@ void			make_texture()
 		}
 		x++;
 	}
+}
+*/
+void		make_texture(t_game *game)
+{
+	int		y;
+	int		x;
+
+	game->stick.img = mlx_xpm_file_to_image(game->vars.mlx, game->map.textures[1], &game->stick.width, &game->stick.height);
+	game->stick.addr = mlx_get_data_addr(game->stick.img, &game->stick.bits_per_pixel, &game->stick.line_length, &game->stick.endian);
+	mlx_put_image_to_window(game->vars.mlx, game->vars.win, game->stick.img, 0, 0);
+	y = 0;
+	while (y < game->stick.height)
+	{
+		x = 0;
+		while (x < game->stick.width)
+		{
+			g_texture[1][game->stick.width * y + x] = game->stick.addr[game->stick.width * y + x];
+			x++;
+		}
+		y++;
+	}
+	mlx_destroy_image(game->vars.mlx, game->stick.img);
+	init_stick(game);
+
+
 }

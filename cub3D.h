@@ -52,6 +52,8 @@ typedef struct s_stick
 {
 	void		*img;
 	char		*addr;
+	int			width;
+	int			height;
 	int			bits_per_pixel;
 	int			line_length;
 	int			endian;
@@ -88,15 +90,18 @@ typedef struct s_ray
 	int			side;
 	double		plane_x;
 	double		plane_y;
+	int			width;
+	int			height;
 }				t_ray;
 
 typedef struct s_player
 {
+	int			jump;
+	int			check;
 	double		pos_x;
 	double		pos_y;
 	double		dir_x;
 	double		dir_y;
-	int			jump;
 }				t_player;
 
 typedef struct s_draw
@@ -109,11 +114,12 @@ typedef struct s_draw
 
 typedef struct s_map
 {
-	char			**map;
+	char		**map;
 	char		*textures[5];
 	int			resolution[2];
 	int			floor;
 	int			celling;
+	int			height;
 }				t_map;
 
 typedef struct s_node
@@ -197,8 +203,11 @@ void			hide_mouse_pointer(t_game *game);
 void			hold_in_senter(t_game *gmae);
 
 void			parsing_cub(t_map *map, t_player *player, int fd);
-char			**parsing_map(int fd, t_player *player);
+char			**parsing_map(int fd, t_player *player, int *map_height);
 void			find_player(char *line, t_player *player, int num);
+void	save_res_info(t_map *map, char *line);
+void			set_player_dir_info(t_player *player, int dir_x, int dir_y);
+void			set_player_pos_info(t_player *player, int pos_x, int pos_y);
 int				pass_space(char *line);
 int				ft_isspace(char line);
 char			*save_path(char *line);
@@ -211,6 +220,9 @@ t_node			*create_node();
 t_node			*next_node(t_node *curr);
 char			**list_to_array(t_node *list, int size);
 
-void			make_texture();
+void			make_texture(t_game *game);
+
+int			check_map(char **map, int x, int y, int map_height);
+void			add_node(t_node *axis, int value);
 
 #endif

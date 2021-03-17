@@ -40,7 +40,7 @@ int				main_loop(t_game *game)
 		}
 			engine(game);
 	}
-	if (game->turn_left)
+	if (game->turn_right)
 	{
 		double old_dir_x = game->player.dir_x;
 		game->player.dir_x = game->player.dir_x * cos(TURNSPEED) - game->player.dir_y * sin(TURNSPEED);
@@ -50,7 +50,7 @@ int				main_loop(t_game *game)
 		game->ray.plane_y = old_plane_x * sin(TURNSPEED) + game->ray.plane_y * cos(TURNSPEED);
 		engine(game);
 	}
-	else if (game->turn_right)
+	else if (game->turn_left)
 	{
 		double old_dir_x = game->player.dir_x;
 		game->player.dir_x = game->player.dir_x * cos(-TURNSPEED) - game->player.dir_y * sin(-TURNSPEED);

@@ -23,12 +23,12 @@ void			hold_in_senter(t_game *game)
 {
 	if (game->mouse.playing == 1)
 	{
-		if (game->mouse.pos_x < WIDTH / 2)
+		if (game->mouse.pos_x < game->ray.width / 2)
 		{
 			game->turn_left = 0;
 			game->turn_right = 1;
 		}
-		else if (game->mouse.pos_x > WIDTH / 2)
+		else if (game->mouse.pos_x > game->ray.width / 2)
 		{
 			game->turn_right = 0;
 			game->turn_left = 1;
@@ -38,6 +38,6 @@ void			hold_in_senter(t_game *game)
 			game->turn_left = 0;
 			game->turn_right = 0;
 		}
-		mlx_mouse_move(game->vars.win, WIDTH / 2, HEIGHT / 2);
+		mlx_mouse_move(game->vars.win, game->ray.width / 2, game->ray.height / 2);
 	}
 }
