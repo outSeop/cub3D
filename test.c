@@ -18,7 +18,7 @@ int			main(int argc, char *argv[])
 	init_map(&game);
 	init_player(&game);
 	parsing_cub(&game.map, &game.player, fd);
-	check_map(game.map.map, (int)game.player.pos_x, (int)game.player.pos_y);
+	check_map(game.map.map, (int)game.player.pos_x, (int)game.player.pos_y, game.map.height);
 	game.ray.width = game.map.resolution[0];
 	game.ray.height = game.map.resolution[1];
 	init_game(&game);
@@ -28,7 +28,7 @@ int			main(int argc, char *argv[])
 		return (0);
 	}
 
-	make_texture(&game);
-	//engine(&game);
+	load_textures(&game);
+	engine(&game);
 	start(&game);
 }

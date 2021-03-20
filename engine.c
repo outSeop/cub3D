@@ -11,7 +11,7 @@ void		engine(t_game *game)
 	{
 		game->ray.camera_x = 2 * pixel_x / (double)game->ray.width - 1;
 		set_ray_info(&game->ray, &game->player);
-		check_hit(&game->ray, &game->map);
+		check_hit(&game->ray, &game->map, &game->sprite);
 		calc_perp_dist(&game->ray, &game->player);
 		set_draw_info(&game->draw, &game->ray);
 		set_tex_info(game);
@@ -47,7 +47,7 @@ void			set_ray_info(t_ray *ray, t_player *player)
 		}
 }
 
-void			check_hit(t_ray *ray, t_map *map)
+void			check_hit(t_ray *ray, t_map *map, t_sprite *sprite)
 {
 	while (1)
 	{
@@ -55,16 +55,24 @@ void			check_hit(t_ray *ray, t_map *map)
 		{
 			ray->side_dist_x += ray->delta_dist_x;
 			ray->map_x += ray->step_x;
+			ray->tex = EA;
+			if (ray->step_x == -1)
+				ray->tex = WE;
 			ray->side = 0;
 		}
 		else
 		{
 			ray->side_dist_y += ray->delta_dist_y;
 			ray->map_y += ray->step_y;
+			ray->tex = SO;
+			if (ray->step_y == -1)
+				ray->tex = NO;
 			ray->side = 1;
 		}
-		if (map->map[ray->map_x][ray->map_y] > '0')
+		if (map->map[ray->map_x][ray->map_y] == '1')
 			return ;
+		else if (map->map[ray->map_x][ray->map_y] == '2')
+
 	}
 }
 

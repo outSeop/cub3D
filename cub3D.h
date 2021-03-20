@@ -46,12 +46,18 @@
 # define C 7
 
 int				g_check;
-int				g_texture[8][TEX_HEIGHT * TEX_WIDTH];
+int				g_texture[8][TEX_HEIGHT * TEX_WIDTH + 1];
+
+typedef struct s_vector
+{
+	double		first;
+	int			second;
+}				t_vector;
 
 typedef struct s_stick
 {
 	void		*img;
-	char		*addr;
+	int			*addr;
 	int			width;
 	int			height;
 	int			bits_per_pixel;
@@ -92,6 +98,7 @@ typedef struct s_ray
 	double		plane_y;
 	int			width;
 	int			height;
+	int			tex;
 }				t_ray;
 
 typedef struct s_player
@@ -146,6 +153,17 @@ typedef struct s_texture
 	double		tex_pos;
 }				t_texture;
 
+typedef struct s_list
+{
+	double		x;
+	double		y;
+	struct s_list	*next;
+}				t_list;
+
+typedef struct s_sprite
+{
+	t_list		*list;
+}
 typedef struct s_game
 {
 	t_vars		vars;
@@ -178,11 +196,12 @@ int				get_b(int trgb);
 int				mouse_pos(int keycode, t_vars *vars);
 int				refresh_camera(t_game *game);
 
+void		set_base_info(t_game *game);
 void			start(t_game *game);
 void			engine(t_game *game);
 
 void			set_ray_info(t_ray *ray, t_player *player);
-void			check_hit(t_ray *ray, t_map *map);
+void			check_hit(t_ray *ray, t_map *map, t_sprite *sprite);
 void			calc_perp_dist(t_ray *ray, t_player *player);
 void			set_draw_info(t_draw *draw, t_ray *ray);
 void			set_tex_info(t_game *game);
@@ -220,7 +239,9 @@ t_node			*create_node();
 t_node			*next_node(t_node *curr);
 char			**list_to_array(t_node *list, int size);
 
-void			make_texture(t_game *game);
+void	buffer(t_game *game);
+void			make_texture(t_game *game, int i);
+void		load_textures(t_game *game);
 
 int			check_map(char **map, int x, int y, int map_height);
 void			add_node(t_node *axis, int value);

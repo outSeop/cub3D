@@ -23,7 +23,8 @@ void	set_draw_info(t_draw *draw, t_ray *ray)
 
 void	set_tex_info(t_game *game)
 {
-	game->tex.num = game->map.map[game->ray.map_x][game->ray.map_y] - 48 - 1;
+	//game->tex.num = game->map.map[game->ray.map_x][game->ray.map_y] - 48 - 1;
+	game->tex.num = game->ray.tex;
 	if (game->ray.side == 0)
 		game->tex.wall_x = game->player.pos_y + game->ray.perp_dist * game->ray.dir_y;
 	else
@@ -61,6 +62,24 @@ void	buffering_pixels(t_game *game, int pixel_x)
 		my_mlx_pixel_put(&game->stick, pixel_x, i++, game->map.floor);
 }
 
+void	buffer(t_game *game)
+{
+	int y;
+	int	x;
+
+	y = 0;
+	while (y < game->stick.height)
+	{
+		x = 0;
+		while (x < game->stick.width)
+		{
+			game->stick.addr[game->stick.width * y + x] = g_texture[0][game->stick.width * y + x];
+			x++;
+		}
+		y++;
+	}
+}
+
 int			check_map(char **map, int x, int y, int map_height)
 {
 	t_node	*node_x;
@@ -88,7 +107,7 @@ int			check_map(char **map, int x, int y, int map_height)
 				return (0);
 			if (map[cy][cx] != 1 && visited[cy][cx] != 1)
 			{
-				visited[cy][cx] = 1
+				visited[cy][cx] = 1;
 				add_node(node_y, cy);
 				add_node(node_x, cx);
 			}
@@ -96,5 +115,5 @@ int			check_map(char **map, int x, int y, int map_height)
 		node_y = node_y->next;
 		node_x = node_x->next;
 	}
-
+	return (1);
 }
