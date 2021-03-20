@@ -11,17 +11,63 @@ void		engine(t_game *game)
 	{
 		game->ray.camera_x = 2 * pixel_x / (double)game->ray.width - 1;
 		set_ray_info(&game->ray, &game->player);
-		check_hit(&game->ray, &game->map, &game->sprite);
+		check_hit(&game->ray, &game->map);
 		calc_perp_dist(&game->ray, &game->player);
 		set_draw_info(&game->draw, &game->ray);
 		set_tex_info(game);
 		buffering_pixels(game, pixel_x);
+
+		// sprite
+		game->z_buffer = game->ray.perp_dist;
+
 		pixel_x++;
+	}
+	sort_sprite(sprite);
+
+	while (sprite)
+	{
+		double	sprite_x = game->sprite.x - game->player.pos_x;
+		double	sprite_y = game->sprite.y - game->player.pos_y;
+
+		double	inv_det = 1.0 / (game->ray.plane_x * game->player.dir_y - game->ray.plane_y * game->plane_x);
+
+		double trans_x = inv_det * (game->player.dir_x * sprite_x - game->player.dir_y * sprite_y);
+		double trans_y = inv_det * (-game->ray.plane_y * sprite_x + game->ray.plane_x * sprite_y);
+
+		int	sprite_screen_x = (int)(game->ray.width / 2) * (1 + trans_x / trans_y);
+
+		int	sprite_height = (int)fabs((game->ray->height / trans_y));
+		int	draw_start_y = -sprite_height / 2 + game->ray.height / 2;
+		if (draw_start_y < 0)
+			draw_start_y = 0;
+		int draw_end_y = sprite_height / 2 + game>ray.height / 2;
+		if (draw_end_y >= game->ray.height)
+			draw_end_y = game->ray.height;
+
+		int	sprite_width = (int)fabs((game->ray->height / trans_y));
+		int	draw_start_x = -sprite_width / 2 + sprite_screen_x;
+		if (draw_start_x < 0)
+			draw_start_x = 0;
+		int draw_end_x = sprite_width / 2 + sprite_screen_x;
+		if (draw_end_x >= game->ray.width)
+			draw_end_x = game->ray.width - 1;
+
+		for (int i = draw_start_x; i < draw_end_x; i++)
+		{
+			int tex_x= (int)((256 * (i - (-sprite_width / 2 + sprite_screen_x)) * game->stick.width / sprite_width) / 256);
+			if (trans_y > 0 && i > 0 && i < game->ray.width && trans_y < )
+		}
+
+
+
+
 	}
 		mlx_put_image_to_window(game->vars.mlx, game->vars.win, game->stick.img, 0, 0);
 
 		init_stick(game);
 }
+
+
 
 void			set_ray_info(t_ray *ray, t_player *player)
 {
@@ -47,7 +93,7 @@ void			set_ray_info(t_ray *ray, t_player *player)
 		}
 }
 
-void			check_hit(t_ray *ray, t_map *map, t_sprite *sprite)
+void			check_hit(t_ray *ray, t_map *map, t_player *player)
 {
 	while (1)
 	{
@@ -72,7 +118,7 @@ void			check_hit(t_ray *ray, t_map *map, t_sprite *sprite)
 		if (map->map[ray->map_x][ray->map_y] == '1')
 			return ;
 		else if (map->map[ray->map_x][ray->map_y] == '2')
-
+			add_sprite(sprite, player, ray->map_x, ray->map_y);
 	}
 }
 

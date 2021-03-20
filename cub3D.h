@@ -153,17 +153,15 @@ typedef struct s_texture
 	double		tex_pos;
 }				t_texture;
 
-typedef struct s_list
-{
-	double		x;
-	double		y;
-	struct s_list	*next;
-}				t_list;
-
 typedef struct s_sprite
 {
-	t_list		*list;
-}
+	int			order;
+	double		distance;
+	double		x;
+	double		y;
+	struct s_sprite *next;
+}				t_sprite;
+
 typedef struct s_game
 {
 	t_vars		vars;
@@ -174,6 +172,7 @@ typedef struct s_game
 	t_mouse		mouse;
 	t_texture	tex;
 	t_map		map;
+	double		*z_buffer;
 	int			angle;
 	int			moving_forward;
 	int			moving_behind;
