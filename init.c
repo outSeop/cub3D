@@ -48,7 +48,7 @@ void			init_stick(t_game *game)
 	game->stick.width = TEX_WIDTH;
 	game->stick.height = TEX_HEIGHT;
 	game->stick.img = mlx_new_image(game->vars.mlx, game->ray.width, game->ray.height);
-	game->stick.addr = mlx_get_data_addr(game->stick.img, &game->stick.bits_per_pixel ,&game->stick.line_length, &game->stick.endian);
+	game->stick.addr = (int*)mlx_get_data_addr(game->stick.img, &game->stick.bits_per_pixel ,&game->stick.line_length, &game->stick.endian);
 }
 
 void			init_vars(t_game *game)

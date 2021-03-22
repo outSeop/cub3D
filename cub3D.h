@@ -51,7 +51,7 @@ int				g_texture[8][TEX_HEIGHT * TEX_WIDTH];
 typedef struct s_stick
 {
 	void		*img;
-	char		*addr;
+	int			*addr;
 	int			width;
 	int			height;
 	int			bits_per_pixel;
@@ -165,6 +165,8 @@ typedef struct s_game
 
 
 
+void		load_textures(t_game *game);
+
 void			my_mlx_pixel_put(t_stick *data, int x, int y, int color);
 int				key_press(int keycode, t_game *game);
 int				key_release(int keycode, t_game *game);
@@ -220,7 +222,7 @@ t_node			*create_node();
 t_node			*next_node(t_node *curr);
 char			**list_to_array(t_node *list, int size);
 
-void			make_texture(t_game *game);
+void			make_texture(t_game *game, int i);
 
 int			check_map(char **map, int x, int y, int map_height);
 void			add_node(t_node *axis, int value);

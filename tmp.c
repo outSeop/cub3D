@@ -88,7 +88,7 @@ int			check_map(char **map, int x, int y, int map_height)
 				return (0);
 			if (map[cy][cx] != 1 && visited[cy][cx] != 1)
 			{
-				visited[cy][cx] = 1
+				visited[cy][cx] = 1;
 				add_node(node_y, cy);
 				add_node(node_x, cx);
 			}
