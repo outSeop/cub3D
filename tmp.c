@@ -47,7 +47,7 @@ void	buffering_pixels(t_game *game, int pixel_x)
 
 	i = 0;
 	while (i < game->draw.draw_start)
-		my_mlx_pixel_put(&game->stick, pixel_x, i++, game->map.celling);
+		game->draw_buffer[i++ * game->ray.width  + pixel_x] = game->map.celling;
 	while (i < game->draw.draw_end)
 	{
 		game->tex.tex_y = (int)game->tex.tex_pos & (TEX_HEIGHT - 1);
@@ -55,11 +55,11 @@ void	buffering_pixels(t_game *game, int pixel_x)
 		color = g_texture[game->tex.num][TEX_HEIGHT * game->tex.tex_y + game->tex.tex_x];
 		if (game->ray.side == 1)
 			color = (color >> 1) & 0x007f7f7f;
-		my_mlx_pixel_put(&game->stick, pixel_x, i, color);
+		game->draw_buffer[i++ * game->ray.width  + pixel_x] = color;
 		i++;
 	}
 	while (i < game->ray.height)
-		my_mlx_pixel_put(&game->stick, pixel_x, i++, game->map.floor);
+		game->draw_buffer[i++ * game->ray.width  + pixel_x] = game->map.floor;
 }
 
 void	buffer(t_game *game)

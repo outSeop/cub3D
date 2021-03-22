@@ -22,6 +22,8 @@ int			main(int argc, char *argv[])
 	game.ray.width = game.map.resolution[0];
 	game.ray.height = game.map.resolution[1];
 	init_game(&game);
+	game.z_buffer = malloc(sizeof(double) * (game.ray.width + 1));
+	game.draw_buffer = malloc(sizeof(int) * game.ray.width * game.ray.height );
 	if (game.player.check != 1)
 	{
 		printf("ERROR\n");

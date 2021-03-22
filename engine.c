@@ -5,46 +5,48 @@ void		engine(t_game *game)
 	int		pixel_x;
 	int		hit;
 
+	game->sprite = malloc(sizeof(t_sprite));
+	game->sprite->next = 0;
 	pixel_x = 0;
 	mlx_clear_window(game->vars.mlx, game->vars.win);
 	while (pixel_x < game->ray.width)
 	{
 		game->ray.camera_x = 2 * pixel_x / (double)game->ray.width - 1;
 		set_ray_info(&game->ray, &game->player);
-		check_hit(&game->ray, &game->map);
+		check_hit(&game->ray, &game->map, &game->player, game->sprite);
 		calc_perp_dist(&game->ray, &game->player);
 		set_draw_info(&game->draw, &game->ray);
 		set_tex_info(game);
 		buffering_pixels(game, pixel_x);
 
 		// sprite
-		game->z_buffer = game->ray.perp_dist;
+		game->z_buffer[pixel_x] = game->ray.perp_dist;
 
 		pixel_x++;
 	}
-	sort_sprite(sprite);
+	sort_sprite(game->sprite);
 
-	while (sprite)
+	while (game->sprite)
 	{
-		double	sprite_x = game->sprite.x - game->player.pos_x;
-		double	sprite_y = game->sprite.y - game->player.pos_y;
+		double	sprite_x = game->sprite->x - game->player.pos_x;
+		double	sprite_y = game->sprite->y - game->player.pos_y;
 
-		double	inv_det = 1.0 / (game->ray.plane_x * game->player.dir_y - game->ray.plane_y * game->plane_x);
+		double	inv_det = 1.0 / (game->ray.plane_x * game->player.dir_y - game->ray.plane_y * game->ray.plane_x);
 
 		double trans_x = inv_det * (game->player.dir_x * sprite_x - game->player.dir_y * sprite_y);
 		double trans_y = inv_det * (-game->ray.plane_y * sprite_x + game->ray.plane_x * sprite_y);
 
 		int	sprite_screen_x = (int)(game->ray.width / 2) * (1 + trans_x / trans_y);
 
-		int	sprite_height = (int)fabs((game->ray->height / trans_y));
+		int	sprite_height = (int)fabs((game->ray.height / trans_y));
 		int	draw_start_y = -sprite_height / 2 + game->ray.height / 2;
 		if (draw_start_y < 0)
 			draw_start_y = 0;
-		int draw_end_y = sprite_height / 2 + game>ray.height / 2;
+		int draw_end_y = sprite_height / 2 + game->ray.height / 2;
 		if (draw_end_y >= game->ray.height)
 			draw_end_y = game->ray.height;
 
-		int	sprite_width = (int)fabs((game->ray->height / trans_y));
+		int	sprite_width = (int)fabs((game->ray.height / trans_y));
 		int	draw_start_x = -sprite_width / 2 + sprite_screen_x;
 		if (draw_start_x < 0)
 			draw_start_x = 0;
@@ -55,15 +57,22 @@ void		engine(t_game *game)
 		for (int i = draw_start_x; i < draw_end_x; i++)
 		{
 			int tex_x= (int)((256 * (i - (-sprite_width / 2 + sprite_screen_x)) * game->stick.width / sprite_width) / 256);
-			if (trans_y > 0 && i > 0 && i < game->ray.width && trans_y < )
+			if (trans_y > 0 && i > 0 && i < game->ray.width && trans_y < game->z_buffer[i])
+			{
+				for (int j = draw_start_y; j < draw_end_y; j++)
+				{
+					int d = j * 256 - game->ray.height * 128 + sprite_height * 128;
+					int tex_y = ((d * game->stick.height) / sprite_height) / 256;
+					int color = g_texture[4][game->stick.width * tex_y + tex_x];
+					if ((color & 0x00FFFFFF) != 0)
+						my_mlx_pixel_put(&game->stick, j, i, color);
+				}
+			}
 		}
-
-
-
-
+		game->sprite = game->sprite->next;
 	}
-		mlx_put_image_to_window(game->vars.mlx, game->vars.win, game->stick.img, 0, 0);
-
+	free(game->sprite);
+	draw(game);
 		init_stick(game);
 }
 
@@ -93,7 +102,7 @@ void			set_ray_info(t_ray *ray, t_player *player)
 		}
 }
 
-void			check_hit(t_ray *ray, t_map *map, t_player *player)
+void			check_hit(t_ray *ray, t_map *map, t_player *player, t_sprite *sprite)
 {
 	while (1)
 	{

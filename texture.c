@@ -38,7 +38,7 @@ void		make_texture(t_game *game, int i)
 
 	game->stick.img = mlx_xpm_file_to_image(game->vars.mlx, game->map.textures[i], &game->stick.width, &game->stick.height);
 	game->stick.addr = (int*)mlx_get_data_addr(game->stick.img, &game->stick.bits_per_pixel, &game->stick.line_length, &game->stick.endian);
-
+	printf("%d\n", i);
 	y = 0;
 	while (y < game->stick.height)
 	{
@@ -62,7 +62,7 @@ void		load_textures(t_game *game)
 
 
 	i = 0;
-	while (i < 4)
+	while (i < 3)
 	{
 		make_texture(game, i);
 		i++;

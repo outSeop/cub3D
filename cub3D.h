@@ -172,15 +172,18 @@ typedef struct s_game
 	t_mouse		mouse;
 	t_texture	tex;
 	t_map		map;
+	t_sprite	*sprite;
 	double		*z_buffer;
 	int			angle;
 	int			moving_forward;
 	int			moving_behind;
 	int			turn_left;
 	int			turn_right;
+	int			*draw_buffer;
 }				t_game;
 
 
+void			draw(t_game *game);
 
 void			my_mlx_pixel_put(t_stick *data, int x, int y, int color);
 int				key_press(int keycode, t_game *game);
@@ -200,7 +203,7 @@ void			start(t_game *game);
 void			engine(t_game *game);
 
 void			set_ray_info(t_ray *ray, t_player *player);
-void			check_hit(t_ray *ray, t_map *map, t_sprite *sprite);
+void			check_hit(t_ray *ray, t_map *map, t_player *player, t_sprite *sprite);
 void			calc_perp_dist(t_ray *ray, t_player *player);
 void			set_draw_info(t_draw *draw, t_ray *ray);
 void			set_tex_info(t_game *game);
@@ -237,6 +240,8 @@ void			jump(t_game *game);
 t_node			*create_node();
 t_node			*next_node(t_node *curr);
 char			**list_to_array(t_node *list, int size);
+void			sort_sprite(t_sprite *sprite);
+void			add_sprite(t_sprite *sprite, t_player *player, double x, double y);
 
 void	buffer(t_game *game);
 void			make_texture(t_game *game, int i);

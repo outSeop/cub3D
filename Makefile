@@ -2,6 +2,7 @@
 
 SRCS =	init_color.c \
 		tmp.c \
+		draw.c \
 		node.c \
 		init.c	\
 		main.c	\

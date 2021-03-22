@@ -45,14 +45,17 @@ void			add_node(t_node *axis, int value)
 	axis->next->y = value;
 }
 
-void			add_sprite(t_sprite *sprite, t_player *player double x, double y)
+void			add_sprite(t_sprite *sprite, t_player *player, double x, double y)
 {
 	int			i;
+
 	while (sprite->next)
 	{
 		sprite = sprite->next;
 		i++;
 	}
+	sprite->next = malloc(sizeof(t_sprite));
+	sprite = sprite->next;
 	sprite->y = y;
 	sprite->x = x;
 	sprite->distance = pow((player->pos_x - sprite->x), 2) + pow((player->pos_y - sprite->y), 2);
@@ -63,17 +66,7 @@ void			add_sprite(t_sprite *sprite, t_player *player double x, double y)
 void			sort_sprite(t_sprite *sprite)
 {
 	t_sprite	*temp;
+	t_sprite	*idx;
 
-	while (sprite->next)
-	{
-		while (sprite->next.next)
-		{
-			if (sprite->distance < sprite->next.distance)
-			{
-				temp = sprite;
-				sprite = sprite->next;
-				sprite->next = temp;
-			}
-		}
-	}
+	printf("%p\n", sprite);
 }
