@@ -8,7 +8,6 @@ void		make_texture(t_game *game, int i)
 	game->stick.img = mlx_xpm_file_to_image(game->vars.mlx, game->map.textures[i], &game->stick.width, &game->stick.height);
 	game->stick.addr = (int*)mlx_get_data_addr(game->stick.img, &game->stick.bits_per_pixel, &game->stick.line_length, &game->stick.endian);
 	mlx_put_image_to_window(game->vars.mlx, game->vars.win, game->stick.img, 0, 0);
-	printf("%d\n", i);
 	y = 0;
 	while (y < game->stick.height)
 	{

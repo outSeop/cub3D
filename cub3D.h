@@ -92,6 +92,9 @@ typedef struct s_ray
 	double		plane_y;
 	int			width;
 	int			height;
+	int			direction;
+	int			num_sprite;
+	int			map_size;
 }				t_ray;
 
 typedef struct s_player
@@ -115,6 +118,7 @@ typedef struct s_draw
 typedef struct s_map
 {
 	char		**map;
+	int			**map_s;
 	char		*textures[5];
 	int			resolution[2];
 	int			floor;
@@ -146,6 +150,15 @@ typedef struct s_texture
 	double		tex_pos;
 }				t_texture;
 
+typedef struct	s_sprite
+{
+	int			sprite_x;
+	int			sprite_y;
+	double		distance;
+	struct s_sprite	*pre;
+	struct s_sprite *next;
+}				t_sprite;
+
 typedef struct s_game
 {
 	t_vars		vars;
@@ -156,11 +169,13 @@ typedef struct s_game
 	t_mouse		mouse;
 	t_texture	tex;
 	t_map		map;
+	t_sprite	*sprite;
 	int			angle;
 	int			moving_forward;
 	int			moving_behind;
 	int			turn_left;
 	int			turn_right;
+	double		*z_buffer;
 }				t_game;
 
 
@@ -184,7 +199,7 @@ void			start(t_game *game);
 void			engine(t_game *game);
 
 void			set_ray_info(t_ray *ray, t_player *player);
-void			check_hit(t_ray *ray, t_map *map);
+void			check_hit(t_ray *ray, t_map *map, t_sprite *sprite);
 void			calc_perp_dist(t_ray *ray, t_player *player);
 void			set_draw_info(t_draw *draw, t_ray *ray);
 void			set_tex_info(t_game *game);
@@ -226,5 +241,9 @@ void			make_texture(t_game *game, int i);
 
 int			check_map(char **map, int x, int y, int map_height);
 void			add_node(t_node *axis, int value);
+void			add_sprite(t_sprite *sprite, t_ray *ray);
+void		calc_sprite_distance(t_sprite *sprite, t_player *player);
+void			sort_sprite(t_sprite *sprit);
+void		free_sprite(t_sprite *sprite);
 
 #endif

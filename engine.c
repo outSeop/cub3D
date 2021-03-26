@@ -7,20 +7,28 @@ void		engine(t_game *game)
 
 	pixel_x = 0;
 	mlx_clear_window(game->vars.mlx, game->vars.win);
+	game->z_buffer = malloc(sizeof(double) * (game->ray.width + 1));
+	game->sprite = malloc(sizeof(t_sprite));
+	game->sprite->next = NULL;
+	game->ray.num_sprite = 0;
 	while (pixel_x < game->ray.width)
 	{
 		game->ray.camera_x = 2 * pixel_x / (double)game->ray.width - 1;
 		set_ray_info(&game->ray, &game->player);
-		check_hit(&game->ray, &game->map);
+		check_hit(&game->ray, &game->map, game->sprite);
 		calc_perp_dist(&game->ray, &game->player);
 		set_draw_info(&game->draw, &game->ray);
 		set_tex_info(game);
 		buffering_pixels(game, pixel_x);
 		pixel_x++;
+		game->z_buffer[pixel_x] = game->ray.perp_dist;
 	}
-		mlx_put_image_to_window(game->vars.mlx, game->vars.win, game->stick.img, 0, 0);
-
-		init_stick(game);
+	calc_sprite_distance(game->sprite, &game->player);
+	mlx_put_image_to_window(game->vars.mlx, game->vars.win, game->stick.img, 0, 0);
+	free(game->z_buffer);
+	free(game->sprite);
+	ft_memset(game->map.map_s, 0, game->ray.map_size);
+	init_stick(game);
 }
 
 void			set_ray_info(t_ray *ray, t_player *player)
@@ -47,7 +55,7 @@ void			set_ray_info(t_ray *ray, t_player *player)
 		}
 }
 
-void			check_hit(t_ray *ray, t_map *map)
+void			check_hit(t_ray *ray, t_map *map, t_sprite *sprite)
 {
 	while (1)
 	{
@@ -56,14 +64,26 @@ void			check_hit(t_ray *ray, t_map *map)
 			ray->side_dist_x += ray->delta_dist_x;
 			ray->map_x += ray->step_x;
 			ray->side = 0;
+			ray->direction = SO;
+			if (ray->step_x == -1)
+				ray->direction = NO;
 		}
 		else
 		{
 			ray->side_dist_y += ray->delta_dist_y;
 			ray->map_y += ray->step_y;
 			ray->side = 1;
+			ray->direction = WE;
+			if (ray->step_y == -1)
+				ray->direction = EA;
 		}
-		if (map->map[ray->map_x][ray->map_y] > '0')
+		if (map->map[ray->map_x][ray->map_y] == '2' && !map->map_s[ray->map_x][ray->map_y])
+		{
+			add_sprite(sprite, ray);
+			ray->num_sprite++;
+			map->map_s[ray->map_x][ray->map_y] = 1;
+		}
+		if (map->map[ray->map_x][ray->map_y] == '1')
 			return ;
 	}
 }

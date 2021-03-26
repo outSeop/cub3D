@@ -27,7 +27,6 @@ int				main_loop(t_game *game)
 			game->player.pos_x = temp_pox_x;
 			game->player.pos_y = temp_pox_y;
 		}
-		engine(game);
 	}
 	else if (game->moving_behind)
 	{
@@ -38,7 +37,6 @@ int				main_loop(t_game *game)
 			game->player.pos_x = temp_pox_x;
 			game->player.pos_y = temp_pox_y;
 		}
-			engine(game);
 	}
 	if (game->turn_right)
 	{
@@ -48,7 +46,6 @@ int				main_loop(t_game *game)
 		double old_plane_x = game->ray.plane_x;
 		game->ray.plane_x = game->ray.plane_x * cos(TURNSPEED) - game->ray.plane_y * sin(TURNSPEED);
 		game->ray.plane_y = old_plane_x * sin(TURNSPEED) + game->ray.plane_y * cos(TURNSPEED);
-		engine(game);
 	}
 	else if (game->turn_left)
 	{
@@ -58,7 +55,6 @@ int				main_loop(t_game *game)
 		double old_plane_x = game->ray.plane_x;
 		game->ray.plane_x = game->ray.plane_x * cos(-TURNSPEED) - game->ray.plane_y * sin(-TURNSPEED);
 		game->ray.plane_y = old_plane_x * sin(-TURNSPEED) + game->ray.plane_y * cos(-TURNSPEED);
-		engine(game);
 	}
 	/*
 	if (game->mouse.playing == 1)
@@ -68,13 +64,17 @@ int				main_loop(t_game *game)
 	}
 	hide_mouse_pointer(game);
 	*/
+	engine(game);
 	return (0);
 }
 
 int				key_press(int keycode, t_game *game)
 {
 	if (keycode == ESC)
+	{
 		close_window(&(game->vars));
+		exit(0);
+	}
 	else if (keycode == KEY_W)
 		game->moving_forward = 1;
 	else if (keycode == KEY_S)

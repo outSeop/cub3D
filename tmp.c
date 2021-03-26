@@ -23,7 +23,8 @@ void	set_draw_info(t_draw *draw, t_ray *ray)
 
 void	set_tex_info(t_game *game)
 {
-	game->tex.num = game->map.map[game->ray.map_x][game->ray.map_y] - 48 - 1;
+	//game->tex.num = game->map.map[game->ray.map_x][game->ray.map_y] - 48 - 1;
+	game->tex.num = game->ray.direction;
 	if (game->ray.side == 0)
 		game->tex.wall_x = game->player.pos_y + game->ray.perp_dist * game->ray.dir_y;
 	else

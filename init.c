@@ -40,6 +40,8 @@ void			init_ray(t_game *game)
 	game->ray.step_x = 0;
 	game->ray.step_y = 0;
 	game->ray.side = 0;
+	game->ray.num_sprite = 0;
+	game->ray.map_size = 0;
 	game->ray.plane_x = game->player.dir_y * 0.66;
 	game->ray.plane_y = -game->player.dir_x * 0.66;
 }

@@ -134,28 +134,28 @@ void			find_player(char *line, t_player *player, int num)
 	{
 		if (line[i] == 'N')
 		{
-			set_player_dir_info(player, 0, 1);
+			set_player_dir_info(player, -1, 0);
 			set_player_pos_info(player, num, i);
 			player->check++;
 			line[i] = '0';
 		}
 		else if (line[i] == 'S')
 		{
-			set_player_dir_info(player, 0, -1);
+			set_player_dir_info(player, 1, 0);
 			set_player_pos_info(player, num, i);
 			player->check++;
 			line[i] = '0';
 		}
 		else if (line[i] == 'W')
 		{
-			set_player_dir_info(player, -1, 0);
+			set_player_dir_info(player, 0, 1);
 			set_player_pos_info(player, num, i);
 			player->check++;
 			line[i] = '0';
 		}
 		else if (line[i] == 'E')
 		{
-			set_player_dir_info(player, 1, 0);
+			set_player_dir_info(player, 0, -1);
 			set_player_pos_info(player, num, i);
 			player->check++;
 			line[i] = '0';
@@ -172,8 +172,8 @@ void			set_player_dir_info(t_player *player, int dir_x, int dir_y)
 
 void			set_player_pos_info(t_player *player, int pos_x, int pos_y)
 {
-	player->pos_x = pos_x;
-	player->pos_y = pos_y;
+	player->pos_x = pos_x + 0.5;
+	player->pos_y = pos_y + 0.5;
 }
 
 char			**free_all(char **line)

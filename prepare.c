@@ -13,9 +13,11 @@ void			parse(t_game *game)
 {
 	parsing_info(game->info);
 	parsing_map(game->map, game->player);
+
 }
 
 void			check(t_game *game)
 {
 	check_map(game->map, game->player);
+	check_
 }
