@@ -47,7 +47,7 @@ void			add_node(t_node *axis, int value)
 
 void			add_sprite(t_sprite *sprite, t_ray *ray)
 {
-	if (sprite->next != NULL)
+	if (sprite != NULL)
 	{
 		while (sprite->next)
 			sprite = sprite->next;
@@ -91,7 +91,7 @@ void			sort_sprite(t_sprite *sprite)
 
 void		calc_sprite_distance(t_sprite *sprite, t_player *player)
 {
-	while (sprite->next)
+	while (sprite)
 	{
 		sprite->distance = pow(player->pos_x - sprite->sprite_x, 2) + pow(player->pos_y - sprite->sprite_y, 2);
 		sprite = sprite->next;

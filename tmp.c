@@ -52,7 +52,7 @@ void	buffering_pixels(t_game *game, int pixel_x)
 	{
 		game->tex.tex_y = (int)game->tex.tex_pos & (TEX_HEIGHT - 1);
 		game->tex.tex_pos += game->tex.step;
-		color = g_texture[game->tex.num][TEX_HEIGHT * game->tex.tex_y + game->tex.tex_x];
+		color = game->tex.tex[game->tex.num][TEX_HEIGHT * game->tex.tex_y + game->tex.tex_x];
 		if (game->ray.side == 1)
 			color = (color >> 1) & 0x007f7f7f;
 		my_mlx_pixel_put(&game->stick, pixel_x, i, color);

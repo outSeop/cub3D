@@ -143,6 +143,7 @@ typedef struct	s_mouse
 typedef struct s_texture
 {
 	int			num;
+	int			tex[5][TEX_WIDTH * TEX_WIDTH];
 	int			tex_x;
 	int			tex_y;
 	double		step;
@@ -178,7 +179,7 @@ typedef struct s_game
 	double		*z_buffer;
 }				t_game;
 
-
+void			buffering_sprite(t_game *game);
 
 void		load_textures(t_game *game);
 

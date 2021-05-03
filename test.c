@@ -22,7 +22,7 @@ int			main(int argc, char *argv[])
 	check_map(game.map.map, (int)game.player.pos_x, (int)game.player.pos_y, game.map.height);
 	game.ray.width = game.map.resolution[0];
 	game.ray.height = game.map.resolution[1];
-	game.map.map_s = malloc(sizeof(int*) * game.map.height);
+	game.map.map_s = (int**)malloc(sizeof(int*) * game.map.height);
 	i = 0;
 	while (i < game.map.height)
 	{
@@ -30,7 +30,7 @@ int			main(int argc, char *argv[])
 		game.map.map_s[i] = malloc(sizeof(int) * ft_strlen(game.map.map[i]));
 		i++;
 	}
-	ft_memset(game.map.map_s, 0, game.ray.map_size - 1);
+	// ft_memset(game.map.map_s, 0, game.ray.map_size);
 	init_game(&game);
 	if (game.player.check != 1)
 	{

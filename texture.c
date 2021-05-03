@@ -14,7 +14,7 @@ void		make_texture(t_game *game, int i)
 		x = 0;
 		while (x < game->stick.width)
 		{
-			g_texture[i][game->stick.width * y + x] = game->stick.addr[game->stick.width * y + x];
+			game->tex.tex[i][game->stick.width * y + x] = game->stick.addr[game->stick.width * y + x];
 			x++;
 		}
 		y++;
@@ -29,6 +29,6 @@ void		load_textures(t_game *game)
 	int		i;
 
 	i = 0;
-	while (i < 4)
+	while (i < 5)
 		make_texture(game, i++);
 }
