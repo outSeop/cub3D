@@ -1,6 +1,6 @@
 #include "cub3D.h"
 
-void		parsing_cub(t_map *map, t_player *player, int fd)
+int		parsing_cub(t_map *map, t_player *player, int fd)
 {
 	char	*line;
 	int		check;
@@ -12,8 +12,10 @@ void		parsing_cub(t_map *map, t_player *player, int fd)
 		check += put_in_texture(map, line);
 		if (check >= 8)
 			break ;
+		free(line);
 	}
-	map->map = parsing_map(fd, player, &map->height);
+	free(line);
+	return (error_file(map));
 }
 
 void		parsing_textures(t_map *map, int fd)
@@ -26,36 +28,62 @@ void		parsing_textures(t_map *map, int fd)
 int			put_in_texture(t_map *map, char *line)
 {
 	int		i;
-	char	element[3];
+	char	*clean_str;
+	char	*element;
 
-	line = ft_strtrim(line, SPACES);
-	i = 0;
-	while (!ft_isspace(*line))
-	{
-		element[i] = *line;
-		line++;
-		i++;
-	}
-	element[i] = '\0';
+	clean_str = ft_strtrim(line, SPACES);
+	element = put_element(clean_str);
+	i = ft_strlen(element);
+	clean_str = clean_string(clean_str , i);
 	if (!ft_strncmp(element, "R", i))
-		save_res_info(map, line);
+		save_res_info(map, clean_str);
 	else if (!ft_strncmp(element, "F", i) && map->floor == 0)
-		map->floor = save_map_info(line);
+		map->floor = save_map_info(clean_str);
 	else if (!ft_strncmp(element, "C", i) && map->celling == 0)
-		map->celling = save_map_info(line);
+		map->celling = save_map_info(clean_str);
 	else if (!ft_strncmp(element, "NO", i) && !map->textures[NO])
-		map->textures[NO] = save_path(line);
+		map->textures[NO] = save_path(clean_str);
 	else if (!ft_strncmp(element, "SO", i) && !map->textures[SO])
-		map->textures[SO] = save_path(line);
+		map->textures[SO] = save_path(clean_str);
 	else if (!ft_strncmp(element, "WE", i) && !map->textures[WE])
-		map->textures[WE] = save_path(line);
+		map->textures[WE] = save_path(clean_str);
 	else if (!ft_strncmp(element, "EA", i) && !map->textures[EA])
-		map->textures[EA] = save_path(line);
+		map->textures[EA] = save_path(clean_str);
 	else if (!ft_strncmp(element, "S", i) && !map->textures[S])
-		map->textures[S] = save_path(line);
+		map->textures[S] = save_path(clean_str);
+	free(clean_str);
 	return (1);
 }
 
+char			*put_element(char *str)
+{
+	int			i;
+	char		*res;
+	char		*temp;
+
+	temp = malloc(3);
+	i = 0;
+	while (!ft_isspace(str[i]))
+	{
+		temp[i] = str[i];
+		i++;
+		if (i > 3)
+		{
+			free(temp);
+			return (NULL);
+		}
+	}
+	temp[i] = '\0';
+	return (temp);
+}
+char			*clean_string(char *str, int i)
+{
+	char		*clean_str;
+
+	clean_str = ft_strtrim(str + i, SPACES);
+	free(str);
+	return (clean_str);
+}
 int				pass_space(char *line)
 {
 	int			i;
@@ -76,12 +104,15 @@ int				ft_isspace(char line)
 char			*save_path(char *line)
 {
 	int		i;
+	char	*clean_str;
+	char	*res;
 
 	i = 0;
-	line = ft_strtrim(line, SPACES);
-	i = pass_space(line + i);
-	line = ft_strdup(line + i);
-	return (line);
+	clean_str = ft_strtrim(line, SPACES);
+	i = pass_space(clean_str + i);
+	res = ft_strdup(clean_str + i);
+	free(clean_str);
+	return (res);
 }
 
 int				save_map_info(char *line)
@@ -91,8 +122,6 @@ int				save_map_info(char *line)
 	char	**colors;
 
 	i = 0;
-	while (!ft_isspace(line[i]))
-		i++;
 	i = pass_space(line + i);
 	colors = ft_split(line + i, ',');
 	i = 0;

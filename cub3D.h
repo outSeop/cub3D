@@ -220,7 +220,7 @@ void			get_mouse_pos(t_game *game);
 void			hide_mouse_pointer(t_game *game);
 void			hold_in_senter(t_game *gmae);
 
-void			parsing_cub(t_map *map, t_player *player, int fd);
+int				parsing_cub(t_map *map, t_player *player, int fd);
 char			**parsing_map(int fd, t_player *player, int *map_height);
 void			find_player(char *line, t_player *player, int num);
 void	save_res_info(t_map *map, char *line);
@@ -233,10 +233,13 @@ int				save_map_info(char *line);
 int				put_in_texture(t_map *map, char *line);
 char			**free_all(char **line);
 void			jump(t_game *game);
+char			*put_element(char *str);
+char			*clean_string(char *str, int i);
 
 t_node			*create_node();
 t_node			*next_node(t_node *curr);
 char			**list_to_array(t_node *list, int size);
+void		free_node(t_node *node);
 
 void			make_texture(t_game *game, int i);
 
@@ -247,4 +250,7 @@ void		calc_sprite_distance(t_sprite *sprite, t_player *player);
 void			sort_sprite(t_sprite *sprit);
 void		free_sprite(t_sprite *sprite);
 
+int			error_input(int argc, char *argv[]);
+int			print_error(char *error);
+int			error_file(t_map *map);
 #endif

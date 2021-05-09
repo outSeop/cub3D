@@ -47,7 +47,7 @@ void			add_node(t_node *axis, int value)
 
 void			add_sprite(t_sprite *sprite, t_ray *ray)
 {
-	if (sprite != NULL)
+	if (sprite->next != NULL)
 	{
 		while (sprite->next)
 			sprite = sprite->next;
@@ -91,9 +91,12 @@ void			sort_sprite(t_sprite *sprite)
 
 void		calc_sprite_distance(t_sprite *sprite, t_player *player)
 {
+	double a, b;
 	while (sprite)
 	{
-		sprite->distance = pow(player->pos_x - sprite->sprite_x, 2) + pow(player->pos_y - sprite->sprite_y, 2);
+		a = pow(player->pos_x - sprite->sprite_x, 2);
+		b = pow(player->pos_y - sprite->sprite_y, 2);
+		sprite->distance = a + b;
 		sprite = sprite->next;
 	}
 }
@@ -109,4 +112,17 @@ void		free_sprite(t_sprite *sprite)
 		sprite = next;
 	}
 	free(sprite);
+}
+
+void		free_node(t_node *node)
+{
+	t_node	*next;
+
+	while (node->next)
+	{
+		next = node->next;
+		free(node);
+		node = next;
+	}
+	free(node);
 }

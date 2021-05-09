@@ -26,14 +26,6 @@ void		engine(t_game *game)
 	}
 	calc_sprite_distance(game->sprite, &game->player);
 	//sort_sprite(game->sprite);
-	int i = 0;
-	t_sprite *s = game->sprite;
-	while (s)
-	{
-		printf("%d ", i++);
-		printf("==%lf==\n", s->distance);
-		s = s->next;
-	}
 	buffering_sprite(game);
 
 	mlx_put_image_to_window(game->vars.mlx, game->vars.win, game->stick.img, 0, 0);
@@ -56,7 +48,6 @@ void		engine(t_game *game)
 }
 void			buffering_sprite(t_game *game)
 {
-	int			i;
 	int			color;
 	double		sprite_x;
 	double		sprite_y;
@@ -65,6 +56,7 @@ void			buffering_sprite(t_game *game)
 	{
 		sprite_x = game->sprite->sprite_x - game->player.pos_x;
 		sprite_y = game->sprite->sprite_y - game->player.pos_y;
+		printf("%d - %d - %.2lf - %.2lf\n", game->sprite->sprite_x, game->sprite->sprite_y, game->player.pos_x, game->player.pos_y);
 
 		double invDet = 1.0 / (game->ray.plane_x * game->ray.dir_y - game->ray.plane_y * game->ray.dir_x);
 		double transform_x = invDet * (game->ray.dir_y * sprite_x - game->ray.dir_x * sprite_y);
@@ -85,17 +77,15 @@ void			buffering_sprite(t_game *game)
 		if (draw_start_x < 0)
 			draw_start_x = 0;
 		int draw_end_x = sprite_width / 2  + sprtie_screen_x;
-		if (draw_end_x >= sprtie_screen_x)
-			draw_end_x = sprtie_screen_x - 1;
+		if (draw_end_x >= game->ray.width)
+			draw_end_x = game->ray.width - 1;
 
-		i = 0;
-		for (i = draw_start_x; i < draw_end_x; i++)
+		for (int i = draw_start_x; i < draw_end_x; i++)
 		{
 			int tex_x = (int)(256 * (i - (-sprite_width / 2 + sprtie_screen_x)) * TEX_WIDTH / sprite_width) / 256;
 			if (transform_y > 0 && i > 0 && i < game->ray.width && transform_y < game->z_buffer[i])
 			{
-				int j = 0;
-				for (j = draw_start_y; j < draw_end_y; j++)
+				for (int j = draw_start_y; j < draw_end_y; j++)
 				{
 					int d = j * 256 - game->ray.height * 128 + sprite_height * 128;
 					int tex_y = ((d * TEX_HEIGHT) / sprite_height) / 256;
