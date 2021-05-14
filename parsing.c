@@ -51,6 +51,7 @@ int			put_in_texture(t_map *map, char *line)
 		map->textures[EA] = save_path(clean_str);
 	else if (!ft_strncmp(element, "S", i) && !map->textures[S])
 		map->textures[S] = save_path(clean_str);
+	free(element);
 	free(clean_str);
 	return (1);
 }
@@ -126,7 +127,7 @@ int				save_map_info(char *line)
 	colors = ft_split(line + i, ',');
 	i = 0;
 	res = create_trgb(0, ft_atoi(colors[0]), ft_atoi(colors[1]), ft_atoi(colors[2]));
-	free(colors);
+	free_all(colors);
 	return (res);
 }
 
@@ -151,6 +152,7 @@ char			**parsing_map(int fd, t_player *player, int *map_height)
 	}
 	*map_height = i;
 	lines = list_to_array(head->next, i);
+	free_node(head);
 	return (lines);
 }
 
@@ -205,13 +207,3 @@ void			set_player_pos_info(t_player *player, int pos_x, int pos_y)
 	player->pos_y = pos_y + 0.5;
 }
 
-char			**free_all(char **line)
-{
-	int			i;
-
-	i = 0;
-	while (*(line + i))
-		free(line + i++);
-	free(line);
-	return (NULL);
-}

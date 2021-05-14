@@ -17,7 +17,7 @@ int			main(int argc, char *argv[])
 	if (parsing_cub(&game.map, &game.player, fd) == -1)
 		return (0);
 	game.map.map = parsing_map(fd, &game.player, &game.map.height);
-	check_map(game.map.map, (int)game.player.pos_x, (int)game.player.pos_y, game.map.height);
+	printf("==%d==\n", check_map(game.map.map, (int)game.player.pos_x, (int)game.player.pos_y, game.map.height));
 	game.ray.width = game.map.resolution[0];
 	game.ray.height = game.map.resolution[1];
 	game.map.map_s = (int**)malloc(sizeof(int*) * game.map.height);

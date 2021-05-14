@@ -45,9 +45,6 @@
 # define F 6
 # define C 7
 
-int				g_check;
-int				g_texture[8][TEX_HEIGHT * TEX_WIDTH];
-
 typedef struct s_stick
 {
 	void		*img;
@@ -201,7 +198,6 @@ void			engine(t_game *game);
 
 void			set_ray_info(t_ray *ray, t_player *player);
 void			check_hit(t_ray *ray, t_map *map, t_sprite *sprite);
-void			calc_perp_dist(t_ray *ray, t_player *player);
 void			set_draw_info(t_draw *draw, t_ray *ray);
 void			set_tex_info(t_game *game);
 void			buffering_pixels(t_game *game, int pixel_x);
@@ -241,6 +237,7 @@ t_node			*next_node(t_node *curr);
 char			**list_to_array(t_node *list, int size);
 void		free_node(t_node *node);
 
+void		calc_perp_dist(t_ray *ray, t_player *player);
 void			make_texture(t_game *game, int i);
 
 int			check_map(char **map, int x, int y, int map_height);
@@ -249,6 +246,8 @@ void			add_sprite(t_sprite *sprite, t_ray *ray);
 void		calc_sprite_distance(t_sprite *sprite, t_player *player);
 void			sort_sprite(t_sprite *sprit);
 void		free_sprite(t_sprite *sprite);
+t_sprite		*add_sprite_front(t_sprite *sprite, t_ray *ray);
+void			reset_map(t_map *map);
 
 int			error_input(int argc, char *argv[]);
 int			print_error(char *error);

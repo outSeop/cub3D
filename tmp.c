@@ -68,34 +68,51 @@ int			check_map(char **map, int x, int y, int map_height)
 	t_node	*node_y;
 	int		hy[4] = {0, 0, 1, -1};
 	int		hx[4] = {1, -1, 0, 0};
-	char	**visited;
 
-	visited = malloc(sizeof(map));
-	ft_memcpy(visited, map, sizeof(map));
 	node_x = create_node();
 	node_y = create_node();
 
 	add_node(node_x, x);
 	add_node(node_y, y);
 
-	while (node_y)
+	while (node_y->next)
 	{
 		for (int i = 0; i < 4; i++)
 		{
-			int cy = node_y->y + hy[i];
-			int cx = node_x->y + hx[i];
+			int cy = node_y->next->y + hy[i];
+			int cx = node_x->next->y + hx[i];
 
-			if (cy < 0 || cy > map_height || cx < 0 || cx > ft_strlen(map[x]))
-				return (0);
-			if (map[cy][cx] != 1 && visited[cy][cx] != 1)
+			printf("%d - %d\n", cy, cx);
+			if (cy < 0 || cy > map_height - 1 || cx < 0 || cx > ft_strlen(map[x]) - 1)
 			{
-				visited[cy][cx] = 1;
+				printf("!!\n");
+				return (0);
+			}
+			if (map[cy][cx] != '1' )//&& visited[cy][cx] != '1')
+			{
 				add_node(node_y, cy);
 				add_node(node_x, cx);
+				map[cy][cx] = '1';
+			}
+			int a = 0;
+			while (map[a])
+			{
+				int  b = 0;
+				while (map[a][b])
+				{
+					if (a == 11 && b == 28)
+						printf("a");
+						else
+					printf("%c", map[a][b]);
+					b++;
+				}
+				a++;
+				printf("\n");
 			}
 		}
 		node_y = node_y->next;
 		node_x = node_x->next;
 	}
+	return (1);
 
 }

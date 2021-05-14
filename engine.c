@@ -5,13 +5,17 @@ void		engine(t_game *game)
 	int		pixel_x;
 	int		hit;
 	char	**temp;
+	t_sprite *head;
 
 	pixel_x = 0;
 	mlx_clear_window(game->vars.mlx, game->vars.win);
 	game->z_buffer = malloc(sizeof(double) * (game->ray.width + 1));
 	game->sprite = malloc(sizeof(t_sprite));
+	game->sprite->pre = NULL;
 	game->sprite->next = NULL;
+	game->sprite->sprite_x = -1;
 	game->ray.num_sprite = 0;
+
 	while (pixel_x < game->ray.width)
 	{
 		game->ray.camera_x = 2 * pixel_x / (double)game->ray.width - 1;
@@ -25,41 +29,36 @@ void		engine(t_game *game)
 		game->z_buffer[pixel_x] = game->ray.perp_dist;
 	}
 	calc_sprite_distance(game->sprite, &game->player);
+	head = game->sprite;
+	while (game->sprite->next)
+		game->sprite = game->sprite->next;
 	//sort_sprite(game->sprite);
 	buffering_sprite(game);
 
 	mlx_put_image_to_window(game->vars.mlx, game->vars.win, game->stick.img, 0, 0);
 	free(game->z_buffer);
-	//free_sprite(game->sprite);
+	free_sprite(game->sprite);
 	// ft_memset(game->map.map_s, 0, game->ray.map_size);
 	init_stick(game);
-	int ii = 0;
-	while (ii < game->map.height)
-	{
-		int j = 0;
-		while (game->map.map[ii][j])
-		{
-			if (game->map.map[ii][j] == '3')
-				game->map.map[ii][j] = '2';
-			j++;
-		}
-		ii++;
-	}
+	reset_map(&game->map);
 }
 void			buffering_sprite(t_game *game)
 {
 	int			color;
 	double		sprite_x;
 	double		sprite_y;
+	t_sprite	*head;
+
+	head = game->sprite;
 
 	while (game->sprite)
 	{
 		sprite_x = game->sprite->sprite_x - game->player.pos_x;
 		sprite_y = game->sprite->sprite_y - game->player.pos_y;
-		printf("%d - %d - %.2lf - %.2lf\n", game->sprite->sprite_x, game->sprite->sprite_y, game->player.pos_x, game->player.pos_y);
+		//printf("%d - %d - %.2lf - %.2lf\n", game->sprite->sprite_x, game->sprite->sprite_y, game->player.pos_x, game->player.pos_y);
 
-		double invDet = 1.0 / (game->ray.plane_x * game->ray.dir_y - game->ray.plane_y * game->ray.dir_x);
-		double transform_x = invDet * (game->ray.dir_y * sprite_x - game->ray.dir_x * sprite_y);
+		double invDet = 1.0 / (game->ray.plane_x * game->player.dir_y - game->ray.plane_y * game->player.dir_x);
+		double transform_x = invDet * (game->player.dir_y * sprite_x - game->player.dir_x * sprite_y);
 		double transform_y = invDet * (- game->ray.plane_y * sprite_x + game->ray.plane_x * sprite_y);
 
 		int  sprtie_screen_x = (int)((game->ray.width / 2) * (1 + transform_x / transform_y));
@@ -94,9 +93,10 @@ void			buffering_sprite(t_game *game)
 				}
 			}
 		}
-		game->sprite = game->sprite->next;
+		game->sprite = game->sprite->pre;
 
 	}
+	game->sprite = head;
 }
 void			set_ray_info(t_ray *ray, t_player *player)
 {
