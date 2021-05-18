@@ -29,9 +29,7 @@ int			error_file(t_map *map)
 		if (fd == -1)
 		{
 			print_error("file error");
-			while (1)
-			{}
-			return (-1);
+			return (0);
 		}
 		i++;
 	}
@@ -41,5 +39,6 @@ return (1);
 int		print_error(char *error)
 {
 	printf("%s\n", error);
+	exit(-1);
 	return (-1);
 }

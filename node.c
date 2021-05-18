@@ -29,7 +29,7 @@ char			**list_to_array(t_node *list, int size)
 	i = 0;
 	while (list)
 	{
-		array[i] = list->line;
+		array[i] = ft_strdup(list->line);
 		i++;
 		list = list->next;
 	}

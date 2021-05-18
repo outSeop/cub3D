@@ -4,8 +4,13 @@ void	save_res_info(t_map *map, char *line)
 {
 	int	i;
 
+	if (!line[i])
+	{
+		printf("wrong\n");
+		exit(-1);
+	}
 	map->resolution[0] = ft_atoi(line);
-	while (!ft_isspace(line[i]))
+	while (line[i] && !ft_isspace(line[i]))
 		i++;
 	map->resolution[1] = ft_atoi(line + i);
 }
@@ -23,7 +28,6 @@ void	set_draw_info(t_draw *draw, t_ray *ray)
 
 void	set_tex_info(t_game *game)
 {
-	//game->tex.num = game->map.map[game->ray.map_x][game->ray.map_y] - 48 - 1;
 	game->tex.num = game->ray.direction;
 	if (game->ray.side == 0)
 		game->tex.wall_x = game->player.pos_y + game->ray.perp_dist * game->ray.dir_y;
@@ -62,57 +66,83 @@ void	buffering_pixels(t_game *game, int pixel_x)
 		my_mlx_pixel_put(&game->stick, pixel_x, i++, game->map.floor);
 }
 
+
+
+
+
+
 int			check_map(char **map, int x, int y, int map_height)
 {
+	int		i;
 	t_node	*node_x;
 	t_node	*node_y;
-	int		hy[4] = {0, 0, 1, -1};
-	int		hx[4] = {1, -1, 0, 0};
 
 	node_x = create_node();
 	node_y = create_node();
+	add_nodes(node_y, node_x, y, x);
+	if (!bfs(node_y, node_x, map, map_height))
+		return (0);
+	while (find_zero(map, &y, &x))
+	{
+		map[y][x] = add_nodes(node_y, node_x, y, x);
+		if (!bfs(node_y, node_x, map, map_height))
+			return (0);
+	}
+	return (1);
+}
 
-	add_node(node_x, x);
-	add_node(node_y, y);
+char		add_nodes(t_node *ny, t_node *nx, int y, int x)
+{
+	add_node(ny, y);
+	add_node(nx, x);
+	return ('1');
+}
+
+int			bfs(t_node *node_y, t_node *node_x, char **map, int map_height)
+{
+	int		y;
+	int		x;
+	int		i;
 
 	while (node_y->next)
 	{
-		for (int i = 0; i < 4; i++)
+		i = -1;
+		while (++i < 4)
 		{
-			int cy = node_y->next->y + hy[i];
-			int cx = node_x->next->y + hx[i];
-
-			printf("%d - %d\n", cy, cx);
-			if (cy < 0 || cy > map_height - 1 || cx < 0 || cx > ft_strlen(map[x]) - 1)
-			{
-				printf("!!\n");
+			y = node_y->next->y + HY[i] - '0' - 2;
+			x = node_x->next->y + HX[i] - '0' - 2;
+			if (y < 0 || y > map_height || x < 0 || x >= ft_strlen(map[y]))
 				return (0);
-			}
-			if (map[cy][cx] != '1' )//&& visited[cy][cx] != '1')
-			{
-				add_node(node_y, cy);
-				add_node(node_x, cx);
-				map[cy][cx] = '1';
-			}
-			int a = 0;
-			while (map[a])
-			{
-				int  b = 0;
-				while (map[a][b])
-				{
-					if (a == 11 && b == 28)
-						printf("a");
-						else
-					printf("%c", map[a][b]);
-					b++;
-				}
-				a++;
-				printf("\n");
-			}
+			if (map[y][x] == '1')
+				continue;
+			map[y][x] = add_nodes(node_y, node_x, y, x);;
 		}
 		node_y = node_y->next;
 		node_x = node_x->next;
 	}
 	return (1);
+}
 
+int			find_zero(char **map, int *y, int *x)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	while (map[i])
+	{
+		j = 0;
+		while (map[i][j])
+		{
+			if (map[i][j] == '0')
+			{
+				*y = i;
+				*x = j;
+				return (1);
+			}
+			j++;
+		}
+		i++;
+	}
+	return (0);
 }

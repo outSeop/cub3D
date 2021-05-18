@@ -13,6 +13,7 @@
 # define TEX_HEIGHT 64
 
 # define All_DIRECTIONS "WSEN"
+# define ALLOWED_TEXTS "012 WSEN"
 
 # define mapWidth 24
 # define mapHeight 24
@@ -27,6 +28,8 @@
 #define WIDTH 640
 #define HEIGHT 360
 
+# define HX "2213"
+# define HY "1322"
 
 # define PLAYER_START_POS_X 12
 # define PLAYER_START_POS_Y 12
@@ -115,7 +118,7 @@ typedef struct s_draw
 typedef struct s_map
 {
 	char		**map;
-	int			**map_s;
+	char		**map_visited;
 	char		*textures[5];
 	int			resolution[2];
 	int			floor;
@@ -217,7 +220,7 @@ void			hide_mouse_pointer(t_game *game);
 void			hold_in_senter(t_game *gmae);
 
 int				parsing_cub(t_map *map, t_player *player, int fd);
-char			**parsing_map(int fd, t_player *player, int *map_height);
+int				parsing_map(int fd, t_player *player, int *map_height, t_map *map);
 void			find_player(char *line, t_player *player, int num);
 void	save_res_info(t_map *map, char *line);
 void			set_player_dir_info(t_player *player, int dir_x, int dir_y);
@@ -249,6 +252,9 @@ void		free_sprite(t_sprite *sprite);
 t_sprite		*add_sprite_front(t_sprite *sprite, t_ray *ray);
 void			reset_map(t_map *map);
 
+int			find_zero(char **map, int *y, int *x);
+int			bfs(t_node *node_y, t_node *node_x, char **map, int map_height);
+char		add_nodes(t_node *ny, t_node *nx, int y, int x);
 int			error_input(int argc, char *argv[]);
 int			print_error(char *error);
 int			error_file(t_map *map);

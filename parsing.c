@@ -62,9 +62,11 @@ char			*put_element(char *str)
 	char		*res;
 	char		*temp;
 
+	if (!str[i])
+		print_error("There is wrong\n");
 	temp = malloc(3);
 	i = 0;
-	while (!ft_isspace(str[i]))
+	while (!ft_isspace(str[i])
 	{
 		temp[i] = str[i];
 		i++;
@@ -111,6 +113,11 @@ char			*save_path(char *line)
 	i = 0;
 	clean_str = ft_strtrim(line, SPACES);
 	i = pass_space(clean_str + i);
+	if (ft_strrchr(clean_str + i, ' ')) // Too Many arg
+	{
+		print_error("texture field error");
+		exit(0); // XXX: error handler
+	}
 	res = ft_strdup(clean_str + i);
 	free(clean_str);
 	return (res);
@@ -131,29 +138,32 @@ int				save_map_info(char *line)
 	return (res);
 }
 
-char			**parsing_map(int fd, t_player *player, int *map_height)
+int				parsing_map(int fd, t_player *player, int *map_height, t_map *map)
 {
 	t_node		*node;
 	t_node		*head;
 	char		*line;
-	char		**lines = NULL;
-	int			i;
+	int			gnl;
 
-	i = 0;
+	*map_height = 0;
 	head = create_node();
 	node = head;
 	while (get_next_line(fd, &line))
 	{
+		if (line[0] == 0)
+			continue ;
 		node = next_node(node);
-		node->y = i;
+		node->y = *map_height;
 		node->line = ft_strdup(line);
-		find_player(node->line, player, i);
-		i++;
+		find_player(node->line, player, *map_height);
+		(*map_height)++;
 	}
-	*map_height = i;
-	lines = list_to_array(head->next, i);
+	if (*map_height == 0)
+		return (0);
+	map->map = list_to_array(head->next, *map_height);
+	map->map_visited = list_to_array(head->next, *map_height);
 	free_node(head);
-	return (lines);
+	return (1);
 }
 
 void			find_player(char *line, t_player *player, int num)
@@ -163,7 +173,9 @@ void			find_player(char *line, t_player *player, int num)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] == 'N')
+		if (!ft_strrchr(ALLOWED_TEXTS, line[i]))
+			player->check = 999;
+		else if (line[i] == 'N')
 		{
 			set_player_dir_info(player, -1, 0);
 			set_player_pos_info(player, num, i);
