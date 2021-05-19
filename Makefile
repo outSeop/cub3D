@@ -16,7 +16,7 @@ SRCS =	init_color.c \
 		utils.c \
 
 NAME = Cub3D
-GCC_FLAG = -g  -fsanitize=address  -Wall -Werror -Wextra 
+GCC_FLAG = -g  -fsanitize=address #  -Wall -Werror -Wextra 
 CC = gcc $(GCC_FLAG)
 
 OBJS = $(SRCS:.c=.o)

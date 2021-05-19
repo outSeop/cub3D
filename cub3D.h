@@ -200,7 +200,7 @@ void			start(t_game *game);
 void			engine(t_game *game);
 
 void			set_ray_info(t_ray *ray, t_player *player);
-void			check_hit(t_ray *ray, t_map *map, t_sprite *sprite);
+void			check_hit(t_ray *ray, t_map *map, t_sprite *sprite, t_player *player);
 void			set_draw_info(t_draw *draw, t_ray *ray);
 void			set_tex_info(t_game *game);
 void			buffering_pixels(t_game *game, int pixel_x);
@@ -252,6 +252,7 @@ void		free_sprite(t_sprite *sprite);
 t_sprite		*add_sprite_front(t_sprite *sprite, t_ray *ray);
 void			reset_map(t_map *map);
 
+void			add_sorted_sprite(t_sprite *sprite, t_ray *ray,  double distance);
 int			find_zero(char **map, int *y, int *x);
 int			bfs(t_node *node_y, t_node *node_x, char **map, int map_height);
 char		add_nodes(t_node *ny, t_node *nx, int y, int x);

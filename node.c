@@ -60,6 +60,26 @@ void			add_sprite(t_sprite *sprite, t_ray *ray)
 	sprite->next = NULL;
 }
 
+void			add_sorted_sprite(t_sprite *sprite, t_ray *ray, double distance)
+{
+	t_sprite	*new_sprite;
+
+	new_sprite = malloc(sizeof(t_sprite));
+
+	//printf("%.2f %.2f\n", distance, sprite->distance);
+	while (distance > sprite->distance && sprite->next)
+		sprite = sprite->next;
+	new_sprite->sprite_x = ray->map_x + 0.5;
+	new_sprite->sprite_y = ray->map_y + 0.5;
+	new_sprite->distance = distance;
+	if (sprite->next)
+		new_sprite->next = sprite->next->next;
+	else
+		new_sprite->next = NULL;
+	sprite->next = new_sprite;
+}
+
+
 void		calc_sprite_distance(t_sprite *sprite, t_player *player)
 {
 	t_sprite *head;

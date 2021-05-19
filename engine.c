@@ -1,5 +1,7 @@
 #include "cub3D.h"
 
+int		gg;
+
 void		engine(t_game *game)
 {
 	int		pixel_x;
@@ -9,16 +11,16 @@ void		engine(t_game *game)
 	mlx_clear_window(game->vars.mlx, game->vars.win);
 	game->z_buffer = malloc(sizeof(double) * (game->ray.width + 1));
 	game->sprite = malloc(sizeof(t_sprite));
-	game->sprite->pre = NULL;
 	game->sprite->next = NULL;
-	game->sprite->sprite_x = -1;
+	game->sprite->distance = 0;
 	game->ray.num_sprite = 0;
 
+	gg = 0;
 	while (pixel_x < game->ray.width)
 	{
 		game->ray.camera_x = 2 * pixel_x / (double)game->ray.width - 1;
 		set_ray_info(&game->ray, &game->player);
-		check_hit(&game->ray, &game->map, game->sprite);
+		check_hit(&game->ray, &game->map, game->sprite, &game->player);
 		calc_perp_dist(&game->ray, &game->player);
 		set_draw_info(&game->draw, &game->ray);
 		set_tex_info(game);
@@ -26,10 +28,16 @@ void		engine(t_game *game)
 		pixel_x++;
 		game->z_buffer[pixel_x] = game->ray.perp_dist;
 	}
-	calc_sprite_distance(game->sprite, &game->player);
-	head = game->sprite;
-	while (game->sprite->next)
+	t_sprite *temp = game->sprite;
+	printf("%d\n", game->ray.num_sprite);
+	while (game->sprite)
+	{
+		printf("%.2f ", game->sprite->distance);
 		game->sprite = game->sprite->next;
+	}
+	printf("\n");
+	game->sprite = temp;
+	head = game->sprite;
 	buffering_sprite(game);
 	mlx_put_image_to_window(game->vars.mlx, game->vars.win, game->stick.img, 0, 0);
 	free(game->z_buffer);
@@ -46,7 +54,7 @@ void			buffering_sprite(t_game *game)
 	t_sprite	*head;
 
 	head = game->sprite;
-
+	game->sprite = game->sprite->next;
 	while (game->sprite)
 	{
 		sprite_x = game->sprite->sprite_x - game->player.pos_x;
@@ -89,7 +97,7 @@ void			buffering_sprite(t_game *game)
 				}
 			}
 		}
-		game->sprite = game->sprite->pre;
+		game->sprite = game->sprite->next;
 
 	}
 	game->sprite = head;
@@ -118,8 +126,10 @@ void			set_ray_info(t_ray *ray, t_player *player)
 		}
 }
 
-void			check_hit(t_ray *ray, t_map *map, t_sprite *sprite)
+void			check_hit(t_ray *ray, t_map *map, t_sprite *sprite, t_player *player)
 {
+	double		distance;
+
 	while (1)
 	{
 		if (ray->side_dist_x < ray->side_dist_y)
@@ -142,7 +152,13 @@ void			check_hit(t_ray *ray, t_map *map, t_sprite *sprite)
 		}
 		if (map->map[ray->map_y][ray->map_x] == '2')
 		{
-			add_sprite(sprite, ray);
+			gg++;
+			double a = pow(player->pos_x - ray->map_x, 2);
+			double b = pow(player->pos_y - ray->map_y, 2);
+			distance = a + b;
+			//printf("%d - %.2f\n", gg, distance);
+			add_sorted_sprite(sprite, ray, distance);
+			//add_sprite(sprite, ray);
 			ray->num_sprite++;
 			map->map[ray->map_y][ray->map_x] = '3';
 		}
