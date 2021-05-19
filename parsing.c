@@ -1,6 +1,6 @@
 #include "cub3D.h"
 
-int		parsing_cub(t_map *map, t_player *player, int fd)
+int		parsing_cub(t_map *map, int fd)
 {
 	char	*line;
 	int		check;
@@ -9,6 +9,8 @@ int		parsing_cub(t_map *map, t_player *player, int fd)
 	line = 0;
 	while (get_next_line(fd, &line))
 	{
+		if (!line[0])
+			continue;
 		check += put_in_texture(map, line);
 		if (check >= 8)
 			break ;
@@ -51,6 +53,8 @@ int			put_in_texture(t_map *map, char *line)
 		map->textures[EA] = save_path(clean_str);
 	else if (!ft_strncmp(element, "S", i) && !map->textures[S])
 		map->textures[S] = save_path(clean_str);
+	else
+		print_error("Wrong\n");
 	free(element);
 	free(clean_str);
 	return (1);
@@ -59,20 +63,20 @@ int			put_in_texture(t_map *map, char *line)
 char			*put_element(char *str)
 {
 	int			i;
-	char		*res;
 	char		*temp;
 
-	if (!str[i])
+	if (str[0] == '\0')
 		print_error("There is wrong\n");
 	temp = malloc(3);
 	i = 0;
-	while (!ft_isspace(str[i])
+	while (!ft_isspace(str[i]) && str[i])
 	{
 		temp[i] = str[i];
 		i++;
-		if (i > 3)
+		if (i > 2)
 		{
 			free(temp);
+			print_error("ERROR 1\n");
 			return (NULL);
 		}
 	}
@@ -127,13 +131,35 @@ int				save_map_info(char *line)
 {
 	int		i;
 	int		res;
+	int		int_colors[3];
 	char	**colors;
 
+	if (line[0] == '\0')
+		print_error("ERROR 2\n");
+	colors = ft_split(line, ',');
 	i = 0;
-	i = pass_space(line + i);
-	colors = ft_split(line + i, ',');
+	while (colors[i])
+	{
+		int j = 0;
+		while (colors[i][j])
+		{
+			if (!ft_isdigit(colors[i][j]))
+				print_error("ERROR - Invalid argument in floor or celling\n");
+			j++;
+		}
+		i++;
+	}
+	if (i != 3)
+		print_error("ERROR - Lack of argument in floor or celling\n");
 	i = 0;
-	res = create_trgb(0, ft_atoi(colors[0]), ft_atoi(colors[1]), ft_atoi(colors[2]));
+	while (i < 3)
+	{
+		int_colors[i] = ft_atoi(colors[i]);
+		if (!(0 <= int_colors[i] && int_colors[i] <= 255))
+			print_error("ERROR 8\n")  ;
+		i++;
+	}
+	res = create_trgb(0, int_colors[0], int_colors[1], int_colors[2]);
 	free_all(colors);
 	return (res);
 }
@@ -143,17 +169,17 @@ int				parsing_map(int fd, t_player *player, int *map_height, t_map *map)
 	t_node		*node;
 	t_node		*head;
 	char		*line;
-	int			gnl;
 
 	*map_height = 0;
 	head = create_node();
 	node = head;
 	while (get_next_line(fd, &line))
 	{
-		if (line[0] == 0)
+		if (line[0] == 0 && *map_height == 0)
 			continue ;
+		if (line[0] == 0 && *map_height > 0)
+			return (0);
 		node = next_node(node);
-		node->y = *map_height;
 		node->line = ft_strdup(line);
 		find_player(node->line, player, *map_height);
 		(*map_height)++;
@@ -177,29 +203,29 @@ void			find_player(char *line, t_player *player, int num)
 			player->check = 999;
 		else if (line[i] == 'N')
 		{
-			set_player_dir_info(player, -1, 0);
-			set_player_pos_info(player, num, i);
+			set_player_dir_info(player, 0, -1);
+			set_player_pos_info(player, i, num);
 			player->check++;
 			line[i] = '0';
 		}
 		else if (line[i] == 'S')
 		{
-			set_player_dir_info(player, 1, 0);
-			set_player_pos_info(player, num, i);
+			set_player_dir_info(player, 0, 1);
+			set_player_pos_info(player, i, num);
 			player->check++;
 			line[i] = '0';
 		}
 		else if (line[i] == 'W')
 		{
-			set_player_dir_info(player, 0, 1);
-			set_player_pos_info(player, num, i);
+			set_player_dir_info(player, -1, 0);
+			set_player_pos_info(player, i, num);
 			player->check++;
 			line[i] = '0';
 		}
 		else if (line[i] == 'E')
 		{
-			set_player_dir_info(player, 0, -1);
-			set_player_pos_info(player, num, i);
+			set_player_dir_info(player, 1, 0);
+			set_player_pos_info(player, i, num);
 			player->check++;
 			line[i] = '0';
 		}

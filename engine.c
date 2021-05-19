@@ -3,8 +3,6 @@
 void		engine(t_game *game)
 {
 	int		pixel_x;
-	int		hit;
-	char	**temp;
 	t_sprite *head;
 
 	pixel_x = 0;
@@ -32,9 +30,7 @@ void		engine(t_game *game)
 	head = game->sprite;
 	while (game->sprite->next)
 		game->sprite = game->sprite->next;
-	//sort_sprite(game->sprite);
 	buffering_sprite(game);
-
 	mlx_put_image_to_window(game->vars.mlx, game->vars.win, game->stick.img, 0, 0);
 	free(game->z_buffer);
 	free_sprite(game->sprite);
@@ -131,26 +127,26 @@ void			check_hit(t_ray *ray, t_map *map, t_sprite *sprite)
 			ray->side_dist_x += ray->delta_dist_x;
 			ray->map_x += ray->step_x;
 			ray->side = 0;
-			ray->direction = SO;
+			ray->direction = WE;
 			if (ray->step_x == -1)
-				ray->direction = NO;
+				ray->direction = EA;
 		}
 		else
 		{
 			ray->side_dist_y += ray->delta_dist_y;
 			ray->map_y += ray->step_y;
 			ray->side = 1;
-			ray->direction = WE;
+			ray->direction = SO;
 			if (ray->step_y == -1)
-				ray->direction = EA;
+				ray->direction = NO;
 		}
-		if (map->map[ray->map_x][ray->map_y] == '2')
+		if (map->map[ray->map_y][ray->map_x] == '2')
 		{
 			add_sprite(sprite, ray);
 			ray->num_sprite++;
-			map->map[ray->map_x][ray->map_y] = '3';
+			map->map[ray->map_y][ray->map_x] = '3';
 		}
-		if (map->map[ray->map_x][ray->map_y] == '1')
+		if (map->map[ray->map_y][ray->map_x] == '1')
 			return ;
 	}
 }

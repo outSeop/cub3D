@@ -55,13 +55,9 @@ void			add_sprite(t_sprite *sprite, t_ray *ray)
 		sprite->next->pre = sprite;
 		sprite = sprite->next;
 	}
-	sprite->sprite_x = ray->map_x;
-	sprite->sprite_y = ray->map_y;
+	sprite->sprite_x = ray->map_x + 0.5;
+	sprite->sprite_y = ray->map_y + 0.5;
 	sprite->next = NULL;
-}
-void			sort_sprite(t_sprite *sprite)
-{
-
 }
 
 void		calc_sprite_distance(t_sprite *sprite, t_player *player)

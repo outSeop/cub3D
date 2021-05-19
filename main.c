@@ -22,7 +22,7 @@ int				main_loop(t_game *game)
 	{
 		game->player.pos_x += game->player.dir_x * MOVESPEED;
 		game->player.pos_y += game->player.dir_y * MOVESPEED;
-		if (game->map.map[(int)game->player.pos_x][(int)game->player.pos_y] == '1')
+		if (game->map.map[(int)game->player.pos_y][(int)game->player.pos_x] == '1')
 		{
 			game->player.pos_x = temp_pox_x;
 			game->player.pos_y = temp_pox_y;
@@ -32,7 +32,7 @@ int				main_loop(t_game *game)
 	{
 		game->player.pos_x -= game->player.dir_x * MOVESPEED;
 		game->player.pos_y -= game->player.dir_y * MOVESPEED;
-		if (game->map.map[(int)game->player.pos_x][(int)game->player.pos_y] == '1')
+		if (game->map.map[(int)game->player.pos_y][(int)game->player.pos_x] == '1')
 		{
 			game->player.pos_x = temp_pox_x;
 			game->player.pos_y = temp_pox_y;

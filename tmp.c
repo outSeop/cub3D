@@ -3,16 +3,25 @@
 void	save_res_info(t_map *map, char *line)
 {
 	int	i;
+	char	**lines;
 
-	if (!line[i])
+	if (line[0] == '\0')
+		print_error("ERROR 6\n");
+	lines = ft_split(line, ' ');
+	i = 0;
+	while (line[i])
 	{
-		printf("wrong\n");
-		exit(-1);
-	}
-	map->resolution[0] = ft_atoi(line);
-	while (line[i] && !ft_isspace(line[i]))
+		if (!ft_isdigit(line[i]) && line[i] != ' ')
+			print_error("ERROR 5\n");
 		i++;
-	map->resolution[1] = ft_atoi(line + i);
+	}
+	i = 0;
+	while (lines[i])
+		i++;
+	if (i != 2)
+		print_error("ERROR 4\n");
+	map->resolution[0] = ft_atoi(lines[0]);
+	map->resolution[1] = ft_atoi(lines[1]);
 }
 
 void	set_draw_info(t_draw *draw, t_ray *ray)
@@ -66,17 +75,12 @@ void	buffering_pixels(t_game *game, int pixel_x)
 		my_mlx_pixel_put(&game->stick, pixel_x, i++, game->map.floor);
 }
 
-
-
-
-
-
 int			check_map(char **map, int x, int y, int map_height)
 {
-	int		i;
 	t_node	*node_x;
 	t_node	*node_y;
 
+	printf("%d %d\n", y, x);
 	node_x = create_node();
 	node_y = create_node();
 	add_nodes(node_y, node_x, y, x);
@@ -86,7 +90,7 @@ int			check_map(char **map, int x, int y, int map_height)
 	{
 		map[y][x] = add_nodes(node_y, node_x, y, x);
 		if (!bfs(node_y, node_x, map, map_height))
-			return (0);
+			print_error("ERROR - map error\n");
 	}
 	return (1);
 }
@@ -111,11 +115,13 @@ int			bfs(t_node *node_y, t_node *node_x, char **map, int map_height)
 		{
 			y = node_y->next->y + HY[i] - '0' - 2;
 			x = node_x->next->y + HX[i] - '0' - 2;
-			if (y < 0 || y > map_height || x < 0 || x >= ft_strlen(map[y]))
+			if (y < 0 || y > map_height || x < 0 || x >= (int)ft_strlen(map[y]))
+			{
 				return (0);
+			}
 			if (map[y][x] == '1')
 				continue;
-			map[y][x] = add_nodes(node_y, node_x, y, x);;
+			map[y][x] = add_nodes(node_y, node_x, y, x);
 		}
 		node_y = node_y->next;
 		node_x = node_x->next;

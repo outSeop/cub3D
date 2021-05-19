@@ -37,7 +37,7 @@
 # define PLAYER_START_DIR_Y 0
 
 # define MOVESPEED 0.1
-# define TURNSPEED 0.07
+# define TURNSPEED 0.1
 
 # define NO 0
 # define SO 1
@@ -153,8 +153,8 @@ typedef struct s_texture
 
 typedef struct	s_sprite
 {
-	int			sprite_x;
-	int			sprite_y;
+	double			sprite_x;
+	double			sprite_y;
 	double		distance;
 	struct s_sprite	*pre;
 	struct s_sprite *next;
@@ -219,7 +219,7 @@ void			get_mouse_pos(t_game *game);
 void			hide_mouse_pointer(t_game *game);
 void			hold_in_senter(t_game *gmae);
 
-int				parsing_cub(t_map *map, t_player *player, int fd);
+int				parsing_cub(t_map *map, int fd);
 int				parsing_map(int fd, t_player *player, int *map_height, t_map *map);
 void			find_player(char *line, t_player *player, int num);
 void	save_res_info(t_map *map, char *line);
