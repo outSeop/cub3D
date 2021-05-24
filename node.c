@@ -60,24 +60,46 @@ void			add_sprite(t_sprite *sprite, t_ray *ray)
 	sprite->next = NULL;
 }
 
-void			add_sorted_sprite(t_sprite *sprite, t_ray *ray, double distance)
+void		add_sorted_sprite(t_sprite **sprite, t_ray *ray, double distance)
 {
 	t_sprite	*new_sprite;
+	t_sprite	*pos;
 
 	new_sprite = malloc(sizeof(t_sprite));
-
-	//printf("%.2f %.2f\n", distance, sprite->distance);
-	while (distance > sprite->distance && sprite->next)
-		sprite = sprite->next;
 	new_sprite->sprite_x = ray->map_x + 0.5;
 	new_sprite->sprite_y = ray->map_y + 0.5;
 	new_sprite->distance = distance;
-	if (sprite->next)
-		new_sprite->next = sprite->next->next;
+	new_sprite->next = NULL;
+	pos = *sprite;
+	if (*sprite == NULL)
+		*sprite = new_sprite;
+	else if (new_sprite->distance <= (*sprite)->distance)
+	{
+		new_sprite->next = *sprite;
+		*sprite = new_sprite;
+	}
 	else
-		new_sprite->next = NULL;
-	sprite->next = new_sprite;
+	{
+		while (1)
+		{
+			if (pos->next == NULL)
+			{
+				pos->next = new_sprite;
+				break ;
+			}
+			else if (new_sprite->distance > pos->next->distance)
+			{
+				new_sprite->next = pos->next;
+				pos->next = new_sprite;
+				break ;
+			}
+			pos = pos->next;
+		}
+	}
+
 }
+
+
 
 
 void		calc_sprite_distance(t_sprite *sprite, t_player *player)
@@ -116,8 +138,10 @@ void		free_node(t_node *node)
 	while (node->next)
 	{
 		next = node->next;
+		free(node->line);
 		free(node);
 		node = next;
 	}
+	free(node->line);
 	free(node);
 }

@@ -20,13 +20,6 @@ int		parsing_cub(t_map *map, int fd)
 	return (error_file(map));
 }
 
-void		parsing_textures(t_map *map, int fd)
-{
-	printf("%s", map->textures[0]);
-	printf("f%d", fd);
-
-}
-
 int			put_in_texture(t_map *map, char *line)
 {
 	int		i;
@@ -176,14 +169,19 @@ int				parsing_map(int fd, t_player *player, int *map_height, t_map *map)
 	while (get_next_line(fd, &line))
 	{
 		if (line[0] == 0 && *map_height == 0)
+		{
+			free(line);
 			continue ;
+		}
 		if (line[0] == 0 && *map_height > 0)
 			return (0);
 		node = next_node(node);
 		node->line = ft_strdup(line);
 		find_player(node->line, player, *map_height);
 		(*map_height)++;
+		free(line);
 	}
+	free(line);
 	if (*map_height == 0)
 		return (0);
 	map->map = list_to_array(head->next, *map_height);

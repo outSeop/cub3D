@@ -6,11 +6,7 @@
 # include <math.h>
 # include <fcntl.h>
 # include <stdio.h>
-# include <mlx.h>
-
-
-# define TEX_WIDTH 64
-# define TEX_HEIGHT 64
+# include "mlx/mlx.h"
 
 # define All_DIRECTIONS "WSEN"
 # define ALLOWED_TEXTS "012 WSEN"
@@ -25,16 +21,8 @@
 # define KEY_D 0
 # define KEY_W 13
 
-#define WIDTH 640
-#define HEIGHT 360
-
 # define HX "2213"
 # define HY "1322"
-
-# define PLAYER_START_POS_X 12
-# define PLAYER_START_POS_Y 12
-# define PLAYER_START_DIR_X 1
-# define PLAYER_START_DIR_Y 0
 
 # define MOVESPEED 0.1
 # define TURNSPEED 0.1
@@ -64,14 +52,6 @@ typedef struct s_vars
 	void		*mlx;
 	void		*win;
 }				t_vars;
-
-typedef struct s_img
-{
-	void		*img;
-	char		*path;
-	int 		img_width;
-	int			img_height;
-}				t_img;
 
 typedef struct s_ray
 {
@@ -143,7 +123,9 @@ typedef struct	s_mouse
 typedef struct s_texture
 {
 	int			num;
-	int			tex[5][TEX_WIDTH * TEX_WIDTH];
+	int			**tex;
+	int			tex_height[5];
+	int			tex_width[5];
 	int			tex_x;
 	int			tex_y;
 	double		step;
@@ -252,11 +234,20 @@ void		free_sprite(t_sprite *sprite);
 t_sprite		*add_sprite_front(t_sprite *sprite, t_ray *ray);
 void			reset_map(t_map *map);
 
-void			add_sorted_sprite(t_sprite *sprite, t_ray *ray,  double distance);
+void		add_sorted_sprite(t_sprite **sprite, t_ray *ray,  double distance);
 int			find_zero(char **map, int *y, int *x);
 int			bfs(t_node *node_y, t_node *node_x, char **map, int map_height);
 char		add_nodes(t_node *ny, t_node *nx, int y, int x);
 int			error_input(int argc, char *argv[]);
 int			print_error(char *error);
 int			error_file(t_map *map);
+
+/*
+** bitmap
+*/
+void	save_bitmap(t_game *game);
+void	set_int_in_char(unsigned char *c, int i);
+void	save_bitmap_header(t_game *game, int padding, int filesize, int file);
+int		get_color(t_game *game, int j, int i);
+void	save_bitmap_data(t_game *game, int file, int padding);
 #endif

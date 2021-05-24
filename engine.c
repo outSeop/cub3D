@@ -1,6 +1,5 @@
 #include "cub3D.h"
 
-int		gg;
 
 void		engine(t_game *game)
 {
@@ -15,7 +14,6 @@ void		engine(t_game *game)
 	game->sprite->distance = 0;
 	game->ray.num_sprite = 0;
 
-	gg = 0;
 	while (pixel_x < game->ray.width)
 	{
 		game->ray.camera_x = 2 * pixel_x / (double)game->ray.width - 1;
@@ -28,21 +26,11 @@ void		engine(t_game *game)
 		pixel_x++;
 		game->z_buffer[pixel_x] = game->ray.perp_dist;
 	}
-	t_sprite *temp = game->sprite;
-	printf("%d\n", game->ray.num_sprite);
-	while (game->sprite)
-	{
-		printf("%.2f ", game->sprite->distance);
-		game->sprite = game->sprite->next;
-	}
-	printf("\n");
-	game->sprite = temp;
-	head = game->sprite;
+
 	buffering_sprite(game);
 	mlx_put_image_to_window(game->vars.mlx, game->vars.win, game->stick.img, 0, 0);
 	free(game->z_buffer);
 	free_sprite(game->sprite);
-	// ft_memset(game->map.map_s, 0, game->ray.map_size);
 	init_stick(game);
 	reset_map(&game->map);
 }
@@ -59,7 +47,6 @@ void			buffering_sprite(t_game *game)
 	{
 		sprite_x = game->sprite->sprite_x - game->player.pos_x;
 		sprite_y = game->sprite->sprite_y - game->player.pos_y;
-		//printf("%d - %d - %.2lf - %.2lf\n", game->sprite->sprite_x, game->sprite->sprite_y, game->player.pos_x, game->player.pos_y);
 
 		double invDet = 1.0 / (game->ray.plane_x * game->player.dir_y - game->ray.plane_y * game->player.dir_x);
 		double transform_x = invDet * (game->player.dir_y * sprite_x - game->player.dir_x * sprite_y);
@@ -85,14 +72,16 @@ void			buffering_sprite(t_game *game)
 
 		for (int i = draw_start_x; i < draw_end_x; i++)
 		{
-			int tex_x = (int)(256 * (i - (-sprite_width / 2 + sprtie_screen_x)) * TEX_WIDTH / sprite_width) / 256;
+			int tex_x = (int)(256 * (i - (-sprite_width / 2 + sprtie_screen_x)) * game->tex.tex_width[S]/ sprite_width) / 256;
 			if (transform_y > 0 && i > 0 && i < game->ray.width && transform_y < game->z_buffer[i])
 			{
 				for (int j = draw_start_y; j < draw_end_y; j++)
 				{
 					int d = j * 256 - game->ray.height * 128 + sprite_height * 128;
-					int tex_y = ((d * TEX_HEIGHT) / sprite_height) / 256;
-					color = game->tex.tex[S][TEX_WIDTH * tex_y + tex_x];
+					int tex_y = ((d * game->tex.tex_height[S] / sprite_height) / 256);
+					color = game->tex.tex[S][game->tex.tex_width[S]* tex_y + tex_x];
+					if (color == 0b11111111000000000000000000000000)
+						continue;
 					my_mlx_pixel_put(&game->stick, i, j, color);
 				}
 			}
@@ -152,13 +141,10 @@ void			check_hit(t_ray *ray, t_map *map, t_sprite *sprite, t_player *player)
 		}
 		if (map->map[ray->map_y][ray->map_x] == '2')
 		{
-			gg++;
 			double a = pow(player->pos_x - ray->map_x, 2);
 			double b = pow(player->pos_y - ray->map_y, 2);
 			distance = a + b;
-			//printf("%d - %.2f\n", gg, distance);
-			add_sorted_sprite(sprite, ray, distance);
-			//add_sprite(sprite, ray);
+			add_sorted_sprite(&sprite, ray, distance);
 			ray->num_sprite++;
 			map->map[ray->map_y][ray->map_x] = '3';
 		}

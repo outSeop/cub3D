@@ -56,14 +56,6 @@ int				main_loop(t_game *game)
 		game->ray.plane_x = game->ray.plane_x * cos(-TURNSPEED) - game->ray.plane_y * sin(-TURNSPEED);
 		game->ray.plane_y = old_plane_x * sin(-TURNSPEED) + game->ray.plane_y * cos(-TURNSPEED);
 	}
-	/*
-	if (game->mouse.playing == 1)
-	{
-		mlx_mouse_get_pos(game->vars.win, &(game->mouse.pos_x), &(game->mouse.pos_y));
-		hold_in_senter(game);
-	}
-	hide_mouse_pointer(game);
-	*/
 	engine(game);
 	return (0);
 }

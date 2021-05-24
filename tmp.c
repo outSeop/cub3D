@@ -22,6 +22,7 @@ void	save_res_info(t_map *map, char *line)
 		print_error("ERROR 4\n");
 	map->resolution[0] = ft_atoi(lines[0]);
 	map->resolution[1] = ft_atoi(lines[1]);
+	free_all(lines);
 }
 
 void	set_draw_info(t_draw *draw, t_ray *ray)
@@ -43,12 +44,12 @@ void	set_tex_info(t_game *game)
 	else
 		game->tex.wall_x = game->player.pos_x + game->ray.perp_dist * game->ray.dir_x;
 	game->tex.wall_x -= floor(game->tex.wall_x);
-	game->tex.tex_x = (int)(game->tex.wall_x * (double)TEX_WIDTH);
+	game->tex.tex_x = (int)(game->tex.wall_x * (double)game->tex.tex_width[game->tex.num]);
 	if (game->ray.side == 0 && game->ray.dir_x > 0)
-		game->tex.tex_x = TEX_WIDTH - game->tex.tex_x - 1;
+		game->tex.tex_x = game->tex.tex_width[game->tex.num]- game->tex.tex_x - 1;
 	if (game->ray.side == 1 && game->ray.dir_y < 0)
-		game->tex.tex_x = TEX_WIDTH - game->tex.tex_x - 1;
-	game->tex.step = 1.0 * TEX_HEIGHT / game->draw.line_height;
+		game->tex.tex_x = game->tex.tex_width[game->tex.num]- game->tex.tex_x - 1;
+	game->tex.step = 1.0 * game->tex.tex_height[game->tex.num] / game->draw.line_height;
 	game->tex.tex_pos = (game->draw.draw_start - game->ray.height / 2 + game->draw.line_height / 2);
 	game->tex.tex_pos *= game->tex.step;
 }
@@ -63,9 +64,9 @@ void	buffering_pixels(t_game *game, int pixel_x)
 		my_mlx_pixel_put(&game->stick, pixel_x, i++, game->map.celling);
 	while (i < game->draw.draw_end)
 	{
-		game->tex.tex_y = (int)game->tex.tex_pos & (TEX_HEIGHT - 1);
+		game->tex.tex_y = (int)game->tex.tex_pos & (game->tex.tex_height[game->tex.num] - 1);
 		game->tex.tex_pos += game->tex.step;
-		color = game->tex.tex[game->tex.num][TEX_HEIGHT * game->tex.tex_y + game->tex.tex_x];
+		color = game->tex.tex[game->tex.num][game->tex.tex_height[game->tex.num] * game->tex.tex_y + game->tex.tex_x];
 		if (game->ray.side == 1)
 			color = (color >> 1) & 0x007f7f7f;
 		my_mlx_pixel_put(&game->stick, pixel_x, i, color);
@@ -80,7 +81,6 @@ int			check_map(char **map, int x, int y, int map_height)
 	t_node	*node_x;
 	t_node	*node_y;
 
-	printf("%d %d\n", y, x);
 	node_x = create_node();
 	node_y = create_node();
 	add_nodes(node_y, node_x, y, x);
@@ -92,6 +92,8 @@ int			check_map(char **map, int x, int y, int map_height)
 		if (!bfs(node_y, node_x, map, map_height))
 			print_error("ERROR - map error\n");
 	}
+	free_node(node_x);
+	free_node(node_y);
 	return (1);
 }
 

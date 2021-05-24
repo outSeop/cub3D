@@ -11,6 +11,7 @@ void			init_game(t_game *game)
 	init_vars(game);
 	init_ray(game);
 	init_stick(game);
+	game->tex.tex = (void*)malloc(sizeof(void*) * 5);
 
 }
 
@@ -47,8 +48,6 @@ void			init_ray(t_game *game)
 }
 void			init_stick(t_game *game)
 {
-	game->stick.width = TEX_WIDTH;
-	game->stick.height = TEX_HEIGHT;
 	game->stick.img = mlx_new_image(game->vars.mlx, game->ray.width, game->ray.height);
 	game->stick.addr = (int*)mlx_get_data_addr(game->stick.img, &game->stick.bits_per_pixel ,&game->stick.line_length, &game->stick.endian);
 }
@@ -69,9 +68,4 @@ void			init_map(t_game *game)
 	game->map.textures[4] = NULL;
 	game->map.floor = 0;
 	game->map.celling = 0;
-}
-
-void			print_init(t_game *game)
-{
-	printf("%f\n", game->player.pos_x);
 }
