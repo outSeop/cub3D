@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inssong <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: inssong <inssong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 05:03:47 by inssong           #+#    #+#             */
-/*   Updated: 2021/05/27 05:03:48 by inssong          ###   ########.fr       */
+/*   Updated: 2021/05/27 07:04:12 by inssong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3d.h"
 
 char			**free_all(char **line)
 {

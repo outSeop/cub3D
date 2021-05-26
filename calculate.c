@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   calculate.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inssong <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: inssong <inssong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 05:03:07 by inssong           #+#    #+#             */
-/*   Updated: 2021/05/27 05:03:07 by inssong          ###   ########.fr       */
+/*   Updated: 2021/05/27 07:03:49 by inssong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3d.h"
 
 void		calc_forward_aixs(t_ray *ray)
 {

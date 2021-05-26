@@ -6,11 +6,11 @@
 /*   By: inssong <inssong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 05:04:05 by inssong           #+#    #+#             */
-/*   Updated: 2021/05/27 05:51:43by inssong          ###   ########.fr       */
+/*   Updated: 2021/05/27 07:04:14 by inssong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3d.h"
 
 int			main(int argc, char *argv[])
 {

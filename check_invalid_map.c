@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   check_invalid_map.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inssong <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: inssong <inssong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 05:03:19 by inssong           #+#    #+#             */
-/*   Updated: 2021/05/27 05:03:20 by inssong          ###   ########.fr       */
+/*   Updated: 2021/05/27 07:03:50 by inssong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3d.h"
 
 int			check_map(char **map, int x, int y, int map_height)
 {

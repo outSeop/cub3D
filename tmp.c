@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tmp.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inssong <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: inssong <inssong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 05:04:44 by inssong           #+#    #+#             */
-/*   Updated: 2021/05/27 05:04:44 by inssong          ###   ########.fr       */
+/*   Updated: 2021/05/27 07:04:15 by inssong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3d.h"
 
 void	set_draw_info(t_draw *draw, t_ray *ray)
 {

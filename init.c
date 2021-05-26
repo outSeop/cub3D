@@ -6,11 +6,11 @@
 /*   By: inssong <inssong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 05:03:58 by inssong           #+#    #+#             */
-/*   Updated: 2021/05/27 06:50:09 by inssong          ###   ########.fr       */
+/*   Updated: 2021/05/27 07:04:13 by inssong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3d.h"
 
 void			init_game(t_game *game)
 {
