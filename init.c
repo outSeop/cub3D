@@ -1,30 +1,18 @@
 #include "cub3D.h"
+
 void			init_game(t_game *game)
 {
-
 	game->angle = 0;
 	game->moving_forward = 0;
 	game->moving_behind = 0;
+	game->moving_left = 0;
+	game->moving_right = 0;
 	game->turn_left = 0;
 	game->turn_right = 0;
-	init_draw(game);
 	init_vars(game);
 	init_ray(game);
 	init_stick(game);
 	game->tex.tex = (void*)malloc(sizeof(void*) * 5);
-
-}
-
-void			init_draw(t_game *game)
-{
-	game->draw.line_height = 0;
-	game->draw.draw_start = 0;
-	game->draw.draw_end = 0;
-	game->draw.color = 0x00000000;
-}
-
-void			init_player(t_game *game)
-{
 	game->player.check = 0;
 }
 
@@ -46,16 +34,21 @@ void			init_ray(t_game *game)
 	game->ray.plane_x = game->player.dir_y * 0.66;
 	game->ray.plane_y = -game->player.dir_x * 0.66;
 }
+
 void			init_stick(t_game *game)
 {
-	game->stick.img = mlx_new_image(game->vars.mlx, game->ray.width, game->ray.height);
-	game->stick.addr = (int*)mlx_get_data_addr(game->stick.img, &game->stick.bits_per_pixel ,&game->stick.line_length, &game->stick.endian);
+	game->stick.img =
+		mlx_new_image(game->vars.mlx, game->ray.width, game->ray.height);
+	game->stick.addr =
+		(int*)mlx_get_data_addr(game->stick.img, &game->stick.bits_per_pixel
+		, &game->stick.line_length, &game->stick.endian);
 }
 
 void			init_vars(t_game *game)
 {
 	game->vars.mlx = mlx_init();
-	game->vars.win = mlx_new_window(game->vars.mlx, game->ray.width, game->ray.height, "title");
+	game->vars.win =
+	mlx_new_window(game->vars.mlx, game->ray.width, game->ray.height, "title");
 }
 
 void			init_map(t_game *game)

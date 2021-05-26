@@ -1,108 +1,51 @@
 #include "cub3D.h"
-/*
-int				main(void)
+
+int			main(int argc, char *argv[])
 {
-	t_game		game;
+	t_game	game;
 
-
-	make_texture();
+	prepare(&game, argc, argv);
+	limit(&game);
 	init_game(&game);
-	engine(&game);
+	load_textures(&game);
 	start(&game);
 }
-*/
-int				main_loop(t_game *game)
-{
-	double		temp_pox_x;
-	double		temp_pox_y;
 
-	temp_pox_x = game->player.pos_x;
-	temp_pox_y = game->player.pos_y;
-	if (game->moving_forward)
-	{
-		game->player.pos_x += game->player.dir_x * MOVESPEED;
-		game->player.pos_y += game->player.dir_y * MOVESPEED;
-		if (game->map.map[(int)game->player.pos_y][(int)game->player.pos_x] == '1')
-		{
-			game->player.pos_x = temp_pox_x;
-			game->player.pos_y = temp_pox_y;
-		}
-	}
-	else if (game->moving_behind)
-	{
-		game->player.pos_x -= game->player.dir_x * MOVESPEED;
-		game->player.pos_y -= game->player.dir_y * MOVESPEED;
-		if (game->map.map[(int)game->player.pos_y][(int)game->player.pos_x] == '1')
-		{
-			game->player.pos_x = temp_pox_x;
-			game->player.pos_y = temp_pox_y;
-		}
-	}
-	if (game->turn_right)
-	{
-		double old_dir_x = game->player.dir_x;
-		game->player.dir_x = game->player.dir_x * cos(TURNSPEED) - game->player.dir_y * sin(TURNSPEED);
-		game->player.dir_y = old_dir_x * sin(TURNSPEED) + game->player.dir_y * cos(TURNSPEED);
-		double old_plane_x = game->ray.plane_x;
-		game->ray.plane_x = game->ray.plane_x * cos(TURNSPEED) - game->ray.plane_y * sin(TURNSPEED);
-		game->ray.plane_y = old_plane_x * sin(TURNSPEED) + game->ray.plane_y * cos(TURNSPEED);
-	}
-	else if (game->turn_left)
-	{
-		double old_dir_x = game->player.dir_x;
-		game->player.dir_x = game->player.dir_x * cos(-TURNSPEED) - game->player.dir_y * sin(-TURNSPEED);
-		game->player.dir_y = old_dir_x * sin(-TURNSPEED) + game->player.dir_y * cos(-TURNSPEED);
-		double old_plane_x = game->ray.plane_x;
-		game->ray.plane_x = game->ray.plane_x * cos(-TURNSPEED) - game->ray.plane_y * sin(-TURNSPEED);
-		game->ray.plane_y = old_plane_x * sin(-TURNSPEED) + game->ray.plane_y * cos(-TURNSPEED);
-	}
-	engine(game);
-	return (0);
+void		prepare(t_game *game, int argc, char *argv[])
+{
+	int		fd;
+
+	game->map.height = 0;
+	if ((fd = error_input(argc, argv, &game->sc) == -1))
+		print_error("ERROR - There is no file");
+	char *a = malloc(1000);
+	printf("!\n");
+	printf("%zd\n", read(fd, a, 3));
+	printf("=====\n");
+	init_map(game);
+	game->player.check = 0;
+	if (parsing_cub(&game->map, fd) == -1)
+		print_error("13");
+	if (!(parsing_map(fd, &game->player, &game->map.height, &game->map)))
+		print_error("23");
+	if (!check_map(game->map.map_visited
+		, (int)game->player.pos_x, (int)game->player.pos_y, game->map.height))
+		print_error("map eeorr\n");
+	error_file(&game->map);
+	game->ray.width = game->map.resolution[0];
+	game->ray.height = game->map.resolution[1];
+	if (game->player.check != 1)
+		print_error("ERROR - map is wrong");
 }
 
-int				key_press(int keycode, t_game *game)
+void		limit(t_game *game)
 {
-	if (keycode == ESC)
-	{
-		close_window(&(game->vars));
-		exit(0);
-	}
-	else if (keycode == KEY_W)
-		game->moving_forward = 1;
-	else if (keycode == KEY_S)
-		game->moving_behind = 1;
-	else if (keycode == KEY_D)
-		game->turn_right = 1;
-	else if (keycode == KEY_A)
-		game->turn_left = 1;
-	if (keycode == 50)
-		game->mouse.playing = 1 - game->mouse.playing;
-		return (0);
-}
+	int x;
+	int	y;
 
-int				key_release(int keycode, t_game *game)
-{
-	if (keycode == KEY_W)
-		game->moving_forward = 0;
-	else if (keycode == KEY_S)
-		game->moving_behind = 0;
-	else if (keycode == KEY_D)
-		game->turn_right = 0;
-	else if (keycode == KEY_A)
-		game->turn_left = 0;
-		return (0);
-}
-
-int				close_window(t_vars *vars)
-{
-	mlx_destroy_window(vars->mlx, vars->win);
-	return (0);
-}
-
-void            my_mlx_pixel_put(t_stick *data, int x, int y, int color)
-{
-    char   *dst;
-
-    dst = (char*)data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-    *(unsigned int*)dst = color;
+	mlx_get_screen_size(game->vars.mlx, &x, &y);
+	if (game->ray.width > x)
+		game->ray.width = x;
+	if (game->ray.height > y)
+		game->ray.height = y;
 }

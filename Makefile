@@ -1,21 +1,28 @@
 .PHONY: libft minilibx all clean fclean re
 
-SRCS =	init_color.c \
+SRCS =	action.c \
+		find_player.c \
+		check_element.c \
+		sprite.c \
 		tmp.c \
 		node.c \
 		init.c	\
 		main.c	\
 		engine.c \
-		texture.c \
 		gnl/get_next_line.c \
 		gnl/get_next_line_utils.c \
 		parsing.c \
-		test.c \
+		game.c \
 		error.c \
 		utils.c \
+		check_invalid_map.c \
+		set_parsing_info.c \
+		calculate.c \
+		reset.c \
+		free.c \
 
 NAME = Cub3D
-GCC_FLAG = -g # -fsanitize=address #  -Wall -Werror -Wextra 
+GCC_FLAG = -Wall -Werror -Wextra 
 CC = gcc $(GCC_FLAG)
 
 OBJS = $(SRCS:.c=.o)
@@ -26,7 +33,7 @@ libft:
 	make -C libft/
 
 minilibx:
-	make -C mlx
+	make -C mlx_custom
 
 $(%.o): $(%.c)
 	$(CC) -o $@ -c $^

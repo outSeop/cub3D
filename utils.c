@@ -1,34 +1,50 @@
 #include "cub3D.h"
 
-char			**free_all(char **line)
+char			**list_to_array(t_node *list, int size)
 {
 	int			i;
+	char		**array;
 
+	if (!(array = malloc(sizeof(char**) * (size + 1))))
+		return (NULL);
 	i = 0;
-	while (line[i])
+	while (list)
 	{
-		free(line[i]);
+		array[i] = ft_strdup(list->line);
 		i++;
+		list = list->next;
 	}
-	free(line);
-	return (NULL);
+	array[i] = NULL;
+	return (array);
 }
 
-void			reset_map(t_map *map)
+int				create_trgb(int t, int r, int g, int b)
+{
+	return (t << 24 | r << 16 | g << 8 | b);
+}
+
+int				pass_space(char *line)
 {
 	int			i;
-	int			j;
 
 	i = 0;
-	while (i < map->height)
-	{
-		j = 0;
-		while (map->map[i][j])
-		{
-			if (map->map[i][j] == '3')
-				map->map[i][j] = '2';
-			j++;
-		}
+	while (ft_isspace(line[i]))
 		i++;
-	}
+	return (i);
+}
+
+int				ft_isspace(char line)
+{
+	if (('\t' <= line && line <= '\r') || line == ' ')
+		return (1);
+	return (0);
+}
+
+char			*clean_string(char *str, int i)
+{
+	char		*clean_str;
+
+	clean_str = ft_strtrim(str + i, SPACES);
+	free(str);
+	return (clean_str);
 }

@@ -7,12 +7,10 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include "mlx/mlx.h"
+# include "mlx_custom/mlx_custom.h"
 
-# define All_DIRECTIONS "WSEN"
+# define ALL_DIRECTIONS "NSEW"
 # define ALLOWED_TEXTS "012 WSEN"
-
-# define mapWidth 24
-# define mapHeight 24
 
 # define SPACES "\t\r "
 # define ESC 53
@@ -20,12 +18,13 @@
 # define KEY_S 1
 # define KEY_D 0
 # define KEY_W 13
-
+# define KEY_LEFT 123
+# define KEY_RIGHT 124
 # define HX "2213"
 # define HY "1322"
 
 # define MOVESPEED 0.1
-# define TURNSPEED 0.1
+# define T_SPEED 0.1
 
 # define NO 0
 # define SO 1
@@ -36,7 +35,25 @@
 # define F 6
 # define C 7
 
-typedef struct s_stick
+typedef struct	s_spinfo
+{
+	double		sprite_x;
+	double		sprite_y;
+	double		inv_det;
+	double		transform_x;
+	double		transform_y;
+	int			sprite_width;
+	int			sprtie_screen_x;
+	int			sprite_height;
+	int			draw_start_x;
+	int			draw_end_x;
+	int			draw_start_y;
+	int			draw_end_y;
+	int			tex_x;
+	int			tex_y;
+}				t_spinfo;
+
+typedef struct	s_stick
 {
 	void		*img;
 	int			*addr;
@@ -47,13 +64,13 @@ typedef struct s_stick
 	int			endian;
 }				t_stick;
 
-typedef struct s_vars
+typedef struct	s_vars
 {
 	void		*mlx;
 	void		*win;
 }				t_vars;
 
-typedef struct s_ray
+typedef struct	s_ray
 {
 	double		camera_x;
 	double		dir_x;
@@ -153,14 +170,22 @@ typedef struct s_game
 	t_texture	tex;
 	t_map		map;
 	t_sprite	*sprite;
+	t_spinfo	spinfo;
 	int			angle;
 	int			moving_forward;
 	int			moving_behind;
+	int			moving_left;
+	int			moving_right;
 	int			turn_left;
 	int			turn_right;
 	double		*z_buffer;
+	int			sc;
 }				t_game;
 
+typedef struct s_error
+{
+	int			element[8];
+}				t_error;
 void			buffering_sprite(t_game *game);
 
 void		load_textures(t_game *game);
@@ -238,7 +263,7 @@ void		add_sorted_sprite(t_sprite **sprite, t_ray *ray,  double distance);
 int			find_zero(char **map, int *y, int *x);
 int			bfs(t_node *node_y, t_node *node_x, char **map, int map_height);
 char		add_nodes(t_node *ny, t_node *nx, int y, int x);
-int			error_input(int argc, char *argv[]);
+int			error_input(int argc, char *argv[], int *sc);
 int			print_error(char *error);
 int			error_file(t_map *map);
 
@@ -250,4 +275,29 @@ void	set_int_in_char(unsigned char *c, int i);
 void	save_bitmap_header(t_game *game, int padding, int filesize, int file);
 int		get_color(t_game *game, int j, int i);
 void	save_bitmap_data(t_game *game, int file, int padding);
+
+/*
+** action
+*/
+void			move_fb(t_game *g);
+void			move_rl(t_game *g);
+void			turn_rl(t_game *g);
+
+t_sprite	*make_new_sprite(t_ray *ray, double distance);
+void		calc_forward_aixs(t_ray *ray);
+void			calc_sprite_xy(t_game *game);
+void			calc_draw_start_end(t_game *game);
+void		buffering_sprite_pixel(t_game *game, t_spinfo *s, t_texture *t);
+
+
+void		prepare(t_game *game, int argc, char *argv[]);
+void		limit(t_game *game);
+int				check_texture(t_map *map, char *clean_str, char *element);
+int				check_rfc(t_map *map, char *clean_str, char *element);
+
+
+void			reset(t_game *game);
+void			find_player(char *line, t_player *player, int num);
+int			check_valid_color(char **colors);
+int				check_sc(char *argv);
 #endif
