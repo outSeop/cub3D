@@ -89,8 +89,6 @@ int				parsing_map(int fd, t_player *player, int *m_h, t_map *map)
 	node = head;
 	while (get_next_line(fd, &line))
 	{
-		if (line[0] == 0 && *m_h > 0)
-			return (0);
 		if (!(line[0] == 0 && *m_h == 0))
 		{
 			node = next_node(node);

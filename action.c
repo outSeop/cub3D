@@ -36,17 +36,17 @@ void			move_rl(t_game *g)
 
 	temp_pox_x = g->player.pos_x;
 	temp_pox_y = g->player.pos_y;
-	if (g->moving_right)
+	if (g->moving_left)
 	{
 		g->player.pos_y += g->player.dir_x * MOVESPEED;
 		g->player.pos_x -= g->player.dir_y * MOVESPEED;
 		if (g->map.map[(int)g->player.pos_y][(int)g->player.pos_x] == '1')
 		{
-			g->player.pos_x = temp_pox_x;
-			g->player.pos_y = temp_pox_y;
+			g->player.pos_y = temp_pox_y - g->player.dir_x * MOVESPEED;
+			g->player.pos_x = temp_pox_x + g->player.dir_y * MOVESPEED;
 		}
 	}
-	if (g->moving_left)
+	if (g->moving_right)
 	{
 		g->player.pos_y -= g->player.dir_x * MOVESPEED;
 		g->player.pos_x += g->player.dir_y * MOVESPEED;
