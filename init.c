@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inssong <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: inssong <inssong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 05:03:58 by inssong           #+#    #+#             */
-/*   Updated: 2021/05/27 05:03:59 by inssong          ###   ########.fr       */
+/*   Updated: 2021/05/27 06:50:09 by inssong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void			init_game(t_game *game)
 	game->turn_right = 0;
 	init_vars(game);
 	init_ray(game);
+	init_stick(game);
 	game->tex.tex = (void*)malloc(sizeof(void*) * 5);
 	game->player.check = 0;
 }

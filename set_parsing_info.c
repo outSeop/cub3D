@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_parsing_info.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inssong <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: inssong <inssong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 05:04:26 by inssong           #+#    #+#             */
-/*   Updated: 2021/05/27 05:04:27 by inssong          ###   ########.fr       */
+/*   Updated: 2021/05/27 06:56:10 by inssong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void		make_texture(t_game *game, int i)
 		while (++x < s->width)
 			game->tex.tex[i][s->width * y + x] = s->addr[s->width * y + x];
 	}
-	mlx_destroy_image(game->vars.mlx, game->stick.img);
+	init_stick(game);
 }
 
 void		load_textures(t_game *game)
