@@ -1,6 +1,7 @@
 .PHONY: libft minilibx all clean fclean re
 
 SRCS =	action.c \
+		bitmap.c \
 		find_player.c \
 		check_element.c \
 		sprite.c \
@@ -22,7 +23,7 @@ SRCS =	action.c \
 		free.c \
 
 NAME = Cub3D
-GCC_FLAG = -Wall -Werror -Wextra 
+GCC_FLAG = -Wall -Werror -Wextra # -g -fsanitize=address
 CC = gcc $(GCC_FLAG)
 
 OBJS = $(SRCS:.c=.o)

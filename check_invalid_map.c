@@ -15,9 +15,7 @@ int			bfs(t_node *node_y, t_node *node_x, char **map, int map_height)
 			x = node_x->next->y + HX[i] - '0' - 2;
 			if (y < 0 || y > map_height || x < 0 || x >= (int)ft_strlen(map[y])
 				|| map[y][x] == ' ')
-			{
 				return (0);
-			}
 			if (map[y][x] == '1')
 				continue;
 			map[y][x] = add_nodes(node_y, node_x, y, x);

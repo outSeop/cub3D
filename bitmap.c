@@ -1,20 +1,24 @@
 #include "cub3D.h"
 
-void	save_bitmap(t_game *game)
+int					save_bitmap(t_game *game)
 {
 	int				padding;
 	int				filesize;
 	int				file;
 
+	if (game->sc == 0)
+		return (0);
 	padding = (4 - (game->ray.width * 3) % 4) % 4;
 	filesize = 54 + ((padding + game->ray.width) * game->ray.height) * 3;
-	file = open("screenshot.bmp"
-		, O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, S_IRWXU);
-	save_bitmap_header(game, padding, filesize, file);
+	if ((file = open("screenshot.bmp"
+		, O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, S_IRWXU)) == -1)
+		print_error("ERROR - Failed open or make bmp file");
+	save_bitmap_header(game, filesize, file);
 	save_bitmap_data(game, file, padding);
+	return (1);
 }
 
-void	save_bitmap_data(t_game *game, int file, int padding)
+void				save_bitmap_data(t_game *game, int file, int padding)
 {
 	int				i;
 	int				j;
@@ -35,19 +39,18 @@ void	save_bitmap_data(t_game *game, int file, int padding)
 	}
 }
 
-int		get_color(t_game *game, int i, int j)
+int					get_color(t_game *game, int i, int j)
 {
-	int	rgb;
-	int	color;
+	int				rgb;
+	int				color;
 
 	color = *(game->stick.addr + ((i * game->stick.line_length
 		+ j * (game->stick.bits_per_pixel / 8)) / 4));
 	rgb = (color & 0xFF0000) | (color & 0x00FF00) | (color & 0x0000FF);
-	printf("%x\n", rgb);
 	return (rgb);
 }
 
-void	save_bitmap_header(t_game *game, int padding, int filesize, int file)
+void				save_bitmap_header(t_game *game, int filesize, int file)
 {
 	int				i;
 	unsigned char	bitmap_header[54];
@@ -67,7 +70,7 @@ void	save_bitmap_header(t_game *game, int padding, int filesize, int file)
 	write(file, bitmap_header, 54);
 }
 
-void	set_int_in_char(unsigned char *c, int i)
+void				set_int_in_char(unsigned char *c, int i)
 {
 	c[0] = (unsigned char)(i);
 	c[1] = (unsigned char)(i >> 8);

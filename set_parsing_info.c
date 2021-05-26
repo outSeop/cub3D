@@ -6,20 +6,20 @@ void		save_res_info(t_map *map, char *line)
 	char	**lines;
 
 	if (line[0] == '\0')
-		print_error("ERROR 6\n");
+		print_error("ERROR - There is no resolution info");
 	lines = ft_split(line, ' ');
 	i = 0;
 	while (line[i])
 	{
 		if (!ft_isdigit(line[i]) && line[i] != ' ')
-			print_error("ERROR 5\n");
+			print_error("ERROR - There is wrong word in resolution info");
 		i++;
 	}
 	i = 0;
 	while (lines[i])
 		i++;
 	if (i != 2)
-		print_error("ERROR 4\n");
+		print_error("ERROR - There are too many resolution info");
 	map->resolution[0] = ft_atoi(lines[0]);
 	map->resolution[1] = ft_atoi(lines[1]);
 	free_all(lines);
@@ -34,12 +34,20 @@ int			check_map(char **map, int x, int y, int map_height)
 	node_y = create_node();
 	add_nodes(node_y, node_x, y, x);
 	if (!bfs(node_y, node_x, map, map_height))
+	{
+		free_node(node_x);
+		free_node(node_y);
 		return (0);
+	}
 	while (find_zero(map, &y, &x))
 	{
 		map[y][x] = add_nodes(node_y, node_x, y, x);
 		if (!bfs(node_y, node_x, map, map_height))
-			print_error("ERROR - map error\n");
+		{
+			free_node(node_x);
+			free_node(node_y);
+			return (0);
+		}
 	}
 	free_node(node_x);
 	free_node(node_y);
@@ -62,7 +70,6 @@ void		make_texture(t_game *game, int i)
 	game->tex.tex_width[i] = s->width;
 	if (s->img == 0)
 		print_error("ERROR - Wrong xpm file");
-	mlx_put_image_to_window(game->vars.mlx, game->vars.win, s->img, 0, 0);
 	y = -1;
 	while (++y < s->height)
 	{

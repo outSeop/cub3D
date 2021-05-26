@@ -32,7 +32,7 @@ int				put_in_texture(t_map *map, char *line)
 	clean_str = clean_string(clean_str, i);
 	if (check_texture(map, clean_str, element) == 0
 		&& check_rfc(map, clean_str, element) == 0)
-		print_error("Wrong");
+		print_error("ERROR - Wrong element");
 	free(element);
 	free(clean_str);
 	return (1);
@@ -47,13 +47,15 @@ char			*put_element(char *str)
 		print_error("There is wrong\n");
 	temp = malloc(3);
 	i = 0;
-	while (str[i] != ' ')
+	while (str[i] != ' ' && str[i])
 	{
 		if (i > 2)
 			print_error("ERROR - Wrong element");
 		temp[i] = str[i];
 		i++;
 	}
+	if (i == 0)
+		print_error("ERROR - There is no texture element");
 	temp[i] = '\0';
 	return (temp);
 }

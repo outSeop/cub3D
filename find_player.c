@@ -35,7 +35,7 @@ int				save_map_info(char *line)
 	char		**colors;
 
 	if (line[0] == '\0')
-		print_error("ERROR 2\n");
+		print_error("ERROR - There is no Floor or ceiling info");
 	colors = ft_split(line, ',');
 	check_valid_color(colors);
 	i = 0;
@@ -43,7 +43,7 @@ int				save_map_info(char *line)
 	{
 		int_colors[i] = ft_atoi(colors[i]);
 		if (!(0 <= int_colors[i] && int_colors[i] <= 255))
-			print_error("ERROR 8\n");
+			print_error("ERROR - out of color range");
 		i++;
 	}
 	res = create_trgb(0, int_colors[0], int_colors[1], int_colors[2]);

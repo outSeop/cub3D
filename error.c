@@ -6,16 +6,19 @@ int				error_input(int argc, char *argv[], int *sc)
 	char		*str;
 
 	if (!(argc >= 2 && argc <= 3))
-		return (print_error("input error"));
+		print_error("ERROR - wrong argument number");
+	*sc = -1;
 	if (argc == 3)
 		*sc = check_sc(argv[2]);
+	if (!(*sc))
+		print_error("ERROR - wrong 3th argument");
 	str = ft_strrchr(argv[1], '.');
 	if (ft_strlen(str) != 4)
-		return (print_error("input error"));
+		print_error("ERROR - wrong extension");
 	if (ft_strncmp(str, ".cub", 4))
-		return (print_error("input error"));
+		print_error("ERROR - wrong extension");
 	if ((fd = open(argv[1], O_RDONLY)) == -1)
-		return (print_error("input eeror"));
+		print_error("ERROR - There is no file");
 	return (fd);
 }
 
@@ -29,10 +32,7 @@ int				error_file(t_map *map)
 	{
 		fd = open(map->textures[i], O_RDONLY);
 		if (fd == -1)
-		{
-			print_error("file error");
-			return (0);
-		}
+			print_error("ERROR - There is no texture file");
 		i++;
 	}
 	return (1);
@@ -41,8 +41,8 @@ int				error_file(t_map *map)
 int				print_error(char *error)
 {
 	printf("%s\n", error);
-	exit(-1);
-	return (-1);
+	exit(0);
+	return (0);
 }
 
 int				check_sc(char *argv)

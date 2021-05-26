@@ -34,8 +34,8 @@ void			move_rl(t_game *g)
 	double		temp_pox_x;
 	double		temp_pox_y;
 
-	temp_pox_x = 0.0;
-	temp_pox_y = 0.0;
+	temp_pox_x = g->player.pos_x;
+	temp_pox_y = g->player.pos_y;
 	if (g->moving_right)
 	{
 		g->player.pos_y += g->player.dir_x * MOVESPEED;
