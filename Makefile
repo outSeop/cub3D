@@ -23,7 +23,7 @@ SRCS =	action.c \
 		free.c \
 
 NAME = Cub3D
-GCC_FLAG = -Wall -Werror -Wextra # -g -fsanitize=address
+GCC_FLAG = -Wall -Werror -Wextra
 CC = gcc $(GCC_FLAG)
 
 OBJS = $(SRCS:.c=.o)

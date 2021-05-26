@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: inssong <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/05/27 05:04:14 by inssong           #+#    #+#             */
+/*   Updated: 2021/05/27 05:04:14 by inssong          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3D.h"
 
 int				parsing_cub(t_map *map, int fd)
@@ -60,22 +72,21 @@ char			*put_element(char *str)
 	return (temp);
 }
 
-char			*save_path(char *line)
+char			*save_path(char *line, int *idx)
 {
-	int		i;
 	char	*clean_str;
 	char	*res;
 
-	i = 0;
+	(*idx)++;
+	if ((*idx) > 1)
+		print_error("ERROR - Duplicate texture");
+	if (line[0] == '\0')
+		print_error("ERROR - There is no file path");
 	clean_str = ft_strtrim(line, SPACES);
-	i = pass_space(clean_str + i);
-	if (ft_strrchr(clean_str + i, ' '))
-	{
-		print_error("texture field error");
-		exit(0);
-	}
-	res = ft_strdup(clean_str + i);
+	res = ft_strdup(clean_str);
 	free(clean_str);
+	if (ft_strncmp(res + (ft_strlen(res) - 4), ".xpm", 4))
+		print_error("ERROR - Wrong texture file format");
 	return (res);
 }
 

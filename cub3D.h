@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3D.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: inssong <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/05/27 05:03:28 by inssong           #+#    #+#             */
+/*   Updated: 2021/05/27 05:03:28 by inssong          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB3D_H
 # define CUB3D_H
 
@@ -12,7 +24,7 @@
 # define ALL_DIRECTIONS "NSEW"
 # define ALLOWED_TEXTS "012 WSEN"
 
-# define SPACES "\t\r "
+# define SPACES " \n\t\v\f\r"
 # define ESC 53
 # define KEY_A 0
 # define KEY_S 1
@@ -23,7 +35,7 @@
 # define HX "2213"
 # define HY "1322"
 
-# define MOVESPEED 0.1
+# define MOVESPEED 0.10000001
 # define T_SPEED 0.1
 
 # define NO 0
@@ -214,8 +226,8 @@ void				set_player_dir_info(t_player *player, int dir_x, int dir_y);
 void				set_player_pos_info(t_player *player, int pos_x, int pos_y);
 int					pass_space(char *line);
 int					ft_isspace(char line);
-char				*save_path(char *line);
-int					save_map_info(char *line);
+char				*save_path(char *line, int *idx);
+int					save_map_info(char *line, int *idx);
 int					put_in_texture(t_map *map, char *line);
 char				**free_all(char **line);
 char				*put_element(char *str);
@@ -282,4 +294,6 @@ int					check_valid_color(char **colors);
 int					check_sc(char *argv);
 void				bitmap(t_game *game);
 
+int					com_max(int a, int b);
+int					is_space(char c);
 #endif

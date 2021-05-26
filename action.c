@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   action.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: inssong <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/05/27 05:02:17 by inssong           #+#    #+#             */
+/*   Updated: 2021/05/27 05:02:18 by inssong          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3D.h"
 
 void			move_fb(t_game *g)
@@ -42,8 +54,8 @@ void			move_rl(t_game *g)
 		g->player.pos_x -= g->player.dir_y * MOVESPEED;
 		if (g->map.map[(int)g->player.pos_y][(int)g->player.pos_x] == '1')
 		{
-			g->player.pos_y = temp_pox_y - g->player.dir_x * MOVESPEED;
-			g->player.pos_x = temp_pox_x + g->player.dir_y * MOVESPEED;
+			g->player.pos_x = temp_pox_x;
+			g->player.pos_y = temp_pox_y;
 		}
 	}
 	if (g->moving_right)

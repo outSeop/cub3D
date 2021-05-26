@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: inssong <inssong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/05/27 05:04:05 by inssong           #+#    #+#             */
+/*   Updated: 2021/05/27 05:51:43by inssong          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3D.h"
 
 int			main(int argc, char *argv[])
@@ -15,6 +27,7 @@ int			main(int argc, char *argv[])
 		return (0);
 	}
 	start(&game);
+	return (0);
 }
 
 void		prepare(t_game *game, int argc, char *argv[])

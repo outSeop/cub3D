@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   error.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: inssong <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/05/27 05:03:38 by inssong           #+#    #+#             */
+/*   Updated: 2021/05/27 05:03:39 by inssong          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3D.h"
 
 int				error_input(int argc, char *argv[], int *sc)
@@ -18,7 +30,7 @@ int				error_input(int argc, char *argv[], int *sc)
 	if (ft_strncmp(str, ".cub", 4))
 		print_error("ERROR - wrong extension");
 	if ((fd = open(argv[1], O_RDONLY)) == -1)
-		print_error("ERROR - There is no file");
+		print_error("ERROR - There is something wrong in file");
 	return (fd);
 }
 

@@ -1,4 +1,45 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_invalid_map.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: inssong <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/05/27 05:03:19 by inssong           #+#    #+#             */
+/*   Updated: 2021/05/27 05:03:20 by inssong          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3D.h"
+
+int			check_map(char **map, int x, int y, int map_height)
+{
+	t_node	*node_x;
+	t_node	*node_y;
+
+	node_x = create_node();
+	node_y = create_node();
+	add_nodes(node_y, node_x, y, x);
+	if (!bfs(node_y, node_x, map, map_height))
+	{
+		free_node(node_x);
+		free_node(node_y);
+		return (0);
+	}
+	while (find_zero(map, &y, &x))
+	{
+		map[y][x] = add_nodes(node_y, node_x, y, x);
+		if (!bfs(node_y, node_x, map, map_height))
+		{
+			free_node(node_x);
+			free_node(node_y);
+			return (0);
+		}
+	}
+	free_node(node_x);
+	free_node(node_y);
+	return (1);
+}
 
 int			bfs(t_node *node_y, t_node *node_x, char **map, int map_height)
 {

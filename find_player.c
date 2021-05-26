@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   find_player.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: inssong <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/05/27 05:03:43 by inssong           #+#    #+#             */
+/*   Updated: 2021/05/27 05:03:43 by inssong          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3D.h"
 
 void			find_player(char *line, t_player *player, int num)
@@ -27,13 +39,16 @@ void			find_player(char *line, t_player *player, int num)
 	}
 }
 
-int				save_map_info(char *line)
+int				save_map_info(char *line, int *idx)
 {
 	int			i;
 	int			res;
 	int			int_colors[3];
 	char		**colors;
 
+	(*idx)++;
+	if (*(idx) > 1)
+		print_error("ERROR - Duplicate floor or ceiling info");
 	if (line[0] == '\0')
 		print_error("ERROR - There is no Floor or ceiling info");
 	colors = ft_split(line, ',');
@@ -55,20 +70,32 @@ int				check_valid_color(char **colors)
 {
 	int			i;
 	int			j;
+	int			chk;
 
 	i = 0;
 	while (colors[i])
 	{
 		j = 0;
+		chk = 0;
 		while (colors[i][j])
 		{
-			if (!ft_isdigit(colors[i][j]))
-				print_error("ERROR - Invalid argument in floor or celling\n");
+			if (is_space(colors[i][j]))
+				chk++;
+			if ((chk > 0 && ft_isdigit(colors[i][j]))
+				|| (!ft_isdigit(colors[i][j]) && !is_space(colors[i][j])))
+				print_error("ERROR - Invalid argument in floor or ceiling");
 			j++;
 		}
 		i++;
 	}
 	if (i != 3)
-		print_error("ERROR - Lack of argument in floor or celling\n");
+		print_error("ERROR - Too many or small argument in floor or ceiling");
 	return (1);
+}
+
+int				is_space(char c)
+{
+	if ((9 <= c && c <= 13) || c == ' ')
+		return (1);
+	return (0);
 }

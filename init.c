@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: inssong <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/05/27 05:03:58 by inssong           #+#    #+#             */
+/*   Updated: 2021/05/27 05:03:59 by inssong          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3D.h"
 
 void			init_game(t_game *game)
@@ -11,7 +23,6 @@ void			init_game(t_game *game)
 	game->turn_right = 0;
 	init_vars(game);
 	init_ray(game);
-	init_stick(game);
 	game->tex.tex = (void*)malloc(sizeof(void*) * 5);
 	game->player.check = 0;
 }
@@ -59,6 +70,14 @@ void			init_map(t_game *game)
 	game->map.textures[2] = NULL;
 	game->map.textures[3] = NULL;
 	game->map.textures[4] = NULL;
+	game->map.chk_dp[0] = 0;
+	game->map.chk_dp[1] = 0;
+	game->map.chk_dp[2] = 0;
+	game->map.chk_dp[3] = 0;
+	game->map.chk_dp[4] = 0;
+	game->map.chk_dp[5] = 0;
+	game->map.chk_dp[6] = 0;
+	game->map.chk_dp[7] = 0;
 	game->map.floor = 0;
 	game->map.celling = 0;
 }

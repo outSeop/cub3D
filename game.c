@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   game.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: inssong <inssong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/05/27 05:03:52 by inssong           #+#    #+#             */
+/*   Updated: 2021/05/27 06:13:29 by inssong          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3D.h"
 
 int				main_loop(t_game *game)
@@ -56,7 +68,7 @@ int				close_window(t_vars *vars)
 
 void			my_mlx_pixel_put(t_stick *data, int x, int y, int color)
 {
-	char	*dst;
+	char		*dst;
 
 	dst = (char*)data->addr + (y * data->line_length
 		+ x * (data->bits_per_pixel / 8));
