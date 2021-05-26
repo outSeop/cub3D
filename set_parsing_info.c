@@ -6,7 +6,7 @@
 /*   By: inssong <inssong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 05:04:26 by inssong           #+#    #+#             */
-/*   Updated: 2021/05/27 07:04:15 by inssong          ###   ########.fr       */
+/*   Updated: 2021/05/27 08:28:26 by inssong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ void		make_texture(t_game *game, int i)
 		print_error("ERROR - file is wrong");
 	s->addr = (int*)mlx_get_data_addr(s->img, &s->bits_per_pixel
 		, &s->line_length, &s->endian);
-	game->tex.tex[i] = malloc(sizeof(int) * s->width * s->height);
+	if (!(game->tex.tex[i] = malloc(sizeof(int) * s->width * s->height)))
+		print_error("ERROR - memory allcated failed");
 	game->tex.tex_height[i] = s->height;
 	game->tex.tex_width[i] = s->width;
 	if (s->img == 0)

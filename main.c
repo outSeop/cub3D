@@ -6,7 +6,7 @@
 /*   By: inssong <inssong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 05:04:05 by inssong           #+#    #+#             */
-/*   Updated: 2021/05/27 07:04:14 by inssong          ###   ########.fr       */
+/*   Updated: 2021/05/27 08:27:17 by inssong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,10 @@ void		bitmap(t_game *game)
 	int pixel_x;
 
 	pixel_x = -1;
-	game->z_buffer = malloc(sizeof(double) * (game->ray.width + 1));
-	game->sprite = malloc(sizeof(t_sprite));
+	if (!(game->z_buffer = malloc(sizeof(double) * (game->ray.width + 1))))
+		print_error("ERROR - memory allcated failed");
+	if (!(game->sprite = malloc(sizeof(t_sprite))))
+		print_error("ERROR - memory allcated failed");
 	game->sprite->next = NULL;
 	game->sprite->distance = 0;
 	while (++pixel_x < game->ray.width)

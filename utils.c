@@ -6,7 +6,7 @@
 /*   By: inssong <inssong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 05:04:47 by inssong           #+#    #+#             */
-/*   Updated: 2021/05/27 07:04:17 by inssong          ###   ########.fr       */
+/*   Updated: 2021/05/27 08:30:24 by inssong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char			**list_to_array(t_node *list, int size)
 	char		**array;
 
 	if (!(array = malloc(sizeof(char**) * (size + 1))))
-		return (NULL);
+		print_error("ERROR - memory allcated failed");
 	i = 0;
 	while (list)
 	{

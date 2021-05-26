@@ -6,7 +6,7 @@
 /*   By: inssong <inssong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 05:04:10 by inssong           #+#    #+#             */
-/*   Updated: 2021/05/27 07:04:14 by inssong          ###   ########.fr       */
+/*   Updated: 2021/05/27 08:27:36 by inssong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ t_sprite		*make_new_sprite(t_ray *ray, double distance)
 {
 	t_sprite	*new_sprite;
 
-	new_sprite = malloc(sizeof(t_sprite));
+	if (!(new_sprite = malloc(sizeof(t_sprite))))
+		print_error("ERROR - memory allcated failed");
 	new_sprite->sprite_x = ray->map_x + 0.5;
 	new_sprite->sprite_y = ray->map_y + 0.5;
 	new_sprite->distance = distance;

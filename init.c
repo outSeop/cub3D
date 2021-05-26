@@ -6,7 +6,7 @@
 /*   By: inssong <inssong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 05:03:58 by inssong           #+#    #+#             */
-/*   Updated: 2021/05/27 07:04:13 by inssong          ###   ########.fr       */
+/*   Updated: 2021/05/27 08:26:24 by inssong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ void			init_game(t_game *game)
 	init_vars(game);
 	init_ray(game);
 	init_stick(game);
-	game->tex.tex = (void*)malloc(sizeof(void*) * 5);
+	if (!(game->tex.tex = (void*)malloc(sizeof(void*) * 5)))
+		print_error("ERROR - memory allcated failed");
 	game->player.check = 0;
 }
 

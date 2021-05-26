@@ -6,7 +6,7 @@
 /*   By: inssong <inssong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 05:03:32 by inssong           #+#    #+#             */
-/*   Updated: 2021/05/27 07:03:56 by inssong          ###   ########.fr       */
+/*   Updated: 2021/05/27 08:30:09 by inssong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ void			engine(t_game *game)
 
 	pixel_x = -1;
 	mlx_clear_window(game->vars.mlx, game->vars.win);
-	game->z_buffer = malloc(sizeof(double) * (game->ray.width + 1));
+	if (!(game->z_buffer = malloc(sizeof(double) * (game->ray.width + 1))))
+		print_error("ERROR - memory allcated failed");
 	game->sprite = malloc(sizeof(t_sprite));
 	game->sprite->next = NULL;
 	game->sprite->distance = 0;
@@ -70,6 +71,10 @@ void			check_hit(t_ray *ray, t_map *map, t_sprite *s, t_player *p)
 	while (1)
 	{
 		calc_forward_aixs(ray);
+		if (ray->map_y < 0 || ray->map_y > map->height || ray->map_x < 0
+			|| ray->map_x >= (int)ft_strlen(map->map[ray->map_y])
+			|| map->map[ray->map_y][ray->map_x] == ' ')
+			return ;
 		if (map->map[ray->map_y][ray->map_x] == '2')
 		{
 			distance = pow(p->pos_x - ray->map_x, 2)

@@ -6,7 +6,7 @@
 /*   By: inssong <inssong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 05:04:14 by inssong           #+#    #+#             */
-/*   Updated: 2021/05/27 07:04:14 by inssong          ###   ########.fr       */
+/*   Updated: 2021/05/27 08:28:00 by inssong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ char			*put_element(char *str)
 
 	if (str[0] == '\0')
 		print_error("There is wrong\n");
-	temp = malloc(3);
+	if (!(temp = malloc(3)))
+		print_error("ERROR - memory allcated failed");
 	i = 0;
 	while (str[i] != ' ' && str[i])
 	{

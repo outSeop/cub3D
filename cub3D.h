@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inssong <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: inssong <inssong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 05:03:28 by inssong           #+#    #+#             */
-/*   Updated: 2021/05/27 05:03:28 by inssong          ###   ########.fr       */
+/*   Updated: 2021/05/27 08:21:25 by inssong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@
 # define HX "2213"
 # define HY "1322"
 
-# define MOVESPEED 0.10000001
-# define T_SPEED 0.1
+# define MOVESPEED 0.050000001
+# define T_SPEED 0.050137
 
 # define NO 0
 # define SO 1
@@ -296,4 +296,6 @@ void				bitmap(t_game *game);
 
 int					com_max(int a, int b);
 int					is_space(char c);
+int					check_out(int y, int x, t_game *g);
+
 #endif
