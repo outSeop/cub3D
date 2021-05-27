@@ -6,7 +6,7 @@
 /*   By: inssong <inssong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 05:03:43 by inssong           #+#    #+#             */
-/*   Updated: 2021/05/27 07:04:07 by inssong          ###   ########.fr       */
+/*   Updated: 2021/05/27 09:16:16 by inssong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int				save_map_info(char *line, int *idx)
 		print_error("ERROR - Duplicate floor or ceiling info");
 	if (line[0] == '\0')
 		print_error("ERROR - There is no Floor or ceiling info");
+	check_comma(line);
 	colors = ft_split(line, ',');
 	check_valid_color(colors);
 	i = 0;
@@ -79,9 +80,9 @@ int				check_valid_color(char **colors)
 		chk = 0;
 		while (colors[i][j])
 		{
-			if (is_space(colors[i][j]))
+			if (ft_isdigit(colors[i][j]))
 				chk++;
-			if ((chk > 0 && ft_isdigit(colors[i][j]))
+			if ((chk > 0 && is_space(colors[i][j]))
 				|| (!ft_isdigit(colors[i][j]) && !is_space(colors[i][j])))
 				print_error("ERROR - Invalid argument in floor or ceiling");
 			j++;
@@ -98,4 +99,21 @@ int				is_space(char c)
 	if ((9 <= c && c <= 13) || c == ' ')
 		return (1);
 	return (0);
+}
+
+void			check_comma(char *line)
+{
+	int			i;
+	int			chk;
+
+	i = 0;
+	chk = 0;
+	while (line[i])
+	{
+		if (line[i] == ',')
+			chk++;
+		if (chk > 3)
+			print_error("ERROR - There are so many arument");
+		i++;
+	}
 }

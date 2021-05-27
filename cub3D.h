@@ -6,7 +6,7 @@
 /*   By: inssong <inssong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 05:03:28 by inssong           #+#    #+#             */
-/*   Updated: 2021/05/27 08:21:25 by inssong          ###   ########.fr       */
+/*   Updated: 2021/05/27 09:06:12 by inssong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,18 +260,12 @@ int					error_input(int argc, char *argv[], int *sc);
 int					print_error(char *error);
 int					error_file(t_map *map);
 
-/*
-** bitmap
-*/
 int					save_bitmap(t_game *game);
 void				set_int_in_char(unsigned char *c, int i);
 void				save_bitmap_header(t_game *game, int filesize, int file);
 int					get_color(t_game *game, int j, int i);
 void				save_bitmap_data(t_game *game, int file, int padding);
 
-/*
-** action
-*/
 void				move_fb(t_game *g);
 void				move_rl(t_game *g);
 void				turn_rl(t_game *g);
@@ -297,5 +291,7 @@ void				bitmap(t_game *game);
 int					com_max(int a, int b);
 int					is_space(char c);
 int					check_out(int y, int x, t_game *g);
+void				check_comma(char *line);
 
+int					finish(t_game *game);
 #endif

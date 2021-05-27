@@ -6,7 +6,7 @@
 /*   By: inssong <inssong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 05:03:32 by inssong           #+#    #+#             */
-/*   Updated: 2021/05/27 08:30:09 by inssong          ###   ########.fr       */
+/*   Updated: 2021/05/27 09:07:59 by inssong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,14 @@ void			start(t_game *game)
 {
 	mlx_hook(game->vars.win, 2, 0, key_press, &(game->vars));
 	mlx_hook(game->vars.win, 3, 0, key_release, &(game->vars));
+	mlx_hook(game->vars.win, 17, 0, finish, &(game->vars));
 	mlx_loop_hook(game->vars.mlx, main_loop, game);
 	mlx_loop(game->vars.mlx);
+}
+
+int				finish(t_game *game)
+{
+	close_window(&(game->vars));
+	exit(0);
+	return (0);
 }
