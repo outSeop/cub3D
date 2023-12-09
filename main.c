@@ -10,14 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3D.h"
 
 int			main(int argc, char *argv[])
 {
 	t_game	game;
 
 	prepare(&game, argc, argv);
-	limit(&game);
+//	limit(&game);
 	init_game(&game);
 	load_textures(&game);
 	if (game.sc == 1)
@@ -53,17 +53,17 @@ void		prepare(t_game *game, int argc, char *argv[])
 		print_error("ERROR - Too many players or invalid word");
 }
 
-void		limit(t_game *game)
-{
-	int x;
-	int	y;
+// void		limit(t_game *game)
+// {
+// 	int x;
+// 	int	y;
 
-	mlx_get_screen_size(game->vars.mlx, &x, &y);
-	if (game->ray.width > x)
-		game->ray.width = x;
-	if (game->ray.height > y)
-		game->ray.height = y;
-}
+// 	mlx_get_screen_size(game->vars.mlx, &x, &y);
+// 	if (game->ray.width > x)
+// 		game->ray.width = x;
+// 	if (game->ray.height > y)
+// 		game->ray.height = y;
+// }
 
 void		bitmap(t_game *game)
 {

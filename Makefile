@@ -34,7 +34,7 @@ libft:
 	make -C libft/
 
 minilibx:
-	make -C mlx_custom
+	make -C mlx
 
 $(%.o): $(%.c)
 	$(CC) -o $@ -c $^

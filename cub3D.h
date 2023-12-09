@@ -19,7 +19,6 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include "mlx/mlx.h"
-# include "mlx_custom/mlx_custom.h"
 
 # define ALL_DIRECTIONS "NSEW"
 # define ALLOWED_TEXTS "012 WSEN"
@@ -278,7 +277,7 @@ void				buffering_sprite_pixel(t_game *game
 						, t_spinfo *s, t_texture *t);
 
 void				prepare(t_game *game, int argc, char *argv[]);
-void				limit(t_game *game);
+// void				limit(t_game *game);
 int					check_texture(t_map *map, char *clean_str, char *element);
 int					check_rfc(t_map *map, char *clean_str, char *element);
 
